@@ -1,0 +1,92 @@
+.teacherPanel_main {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.teacherPanel_name_text {
+  margin-top: 1.25rem;
+  color: #e6e0e9;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+.teacherPanel_course_container {
+  margin-top: 0.62rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.62rem;
+}
+.teacherPanel_course_text {
+  color: #938f99;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+.teacherPanel_dot {
+  width: 5px;
+  height: 5px;
+  background: #938f99;
+  border-radius: 50%;
+}
+.logout_btn {
+  margin-top: 1rem;
+  border-radius: 6.25rem;
+  background: transparent;
+  padding: 0.65rem 1.5rem;
+  border: 1px solid #938f99;
+  color: #d0bcff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.logout_btn:hover {
+  background: #d0bcff;
+  color: #141218;
+}
+.sem_card_container {
+  margin-top: 3.5rem;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 2.5rem;
+}
+.sem_card {
+  border-radius: 1.875rem;
+  width: 20rem;
+  background-color: #d0bcff;
+  padding: 1.62rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../assets/note_stack.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  cursor: pointer;
+  position: relative;
+}
+.sem_text {
+  color: #141218;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1rem;
+}
+.sem_number {
+  color: #141218;
+  font-size: 3rem;
+  font-weight: 600;
+}
+.arrow_image {
+  position: absolute;
+  bottom: 1.2rem;
+  right: 1.5rem;
+  width: 2.8rem;
+  height: 2.8rem;
+}

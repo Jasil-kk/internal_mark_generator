@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./InternalMarkModal.module.css";
 import SubmitButton from "../../components/SubmitButton/SubmitButton";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 const InternalMarkModal = (props) => {
+  const [data, setData] = useState({
+    se1: "",
+    se2: "",
+    se3: "",
+    assg1: "",
+    assg2: "",
+    assg3: "",
+    attendance: "",
+  });
+
+  const handleFieldChange = (e, fieldName) => {
+    const formattedNumber = e.target.value.replace(/\D/g, "");
+
+    if (formattedNumber.length <= 2) {
+      setData({ ...data, [fieldName]: formattedNumber });
+    }
+  };
+
   return (
     <div className={classes.internalMarkModal_main}>
       <div className={classes.internalMarkModal_card}>
@@ -27,6 +45,8 @@ const InternalMarkModal = (props) => {
           <TextField
             id="outlined-controlled"
             label="SE1"
+            value={data.se1}
+            onChange={(e) => handleFieldChange(e, "se1")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -41,6 +61,8 @@ const InternalMarkModal = (props) => {
           <TextField
             id="outlined-uncontrolled"
             label="SE2"
+            value={data.se2}
+            onChange={(e) => handleFieldChange(e, "se2")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -55,6 +77,8 @@ const InternalMarkModal = (props) => {
           <TextField
             id="outlined-uncontrolled"
             label="SE3"
+            value={data.se3}
+            onChange={(e) => handleFieldChange(e, "se3")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -85,6 +109,8 @@ const InternalMarkModal = (props) => {
           <TextField
             id="outlined-controlled"
             label="ASSG1"
+            value={data.assg1}
+            onChange={(e) => handleFieldChange(e, "assg1")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -99,6 +125,8 @@ const InternalMarkModal = (props) => {
           <TextField
             id="outlined-uncontrolled"
             label="ASSG2"
+            value={data.assg2}
+            onChange={(e) => handleFieldChange(e, "assg2")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -113,6 +141,8 @@ const InternalMarkModal = (props) => {
           <TextField
             id="outlined-uncontrolled"
             label="ASSG3"
+            value={data.assg3}
+            onChange={(e) => handleFieldChange(e, "assg3")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -139,6 +169,8 @@ const InternalMarkModal = (props) => {
         >
           <TextField
             id="outlined-uncontrolled"
+            value={data.attendance}
+            onChange={(e) => handleFieldChange(e, "attendance")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,

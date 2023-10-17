@@ -10,7 +10,7 @@ const InternalDeleteModal = (props) => {
           {props.para}
         </p>
         <div className={classes.actions}>
-          <button className={`${classes.action_btn} ${classes.cancel_btn}`}>
+          <button className={`${classes.action_btn} ${classes.cancel_btn}`} onClick={props.handleCancel}>
             {props.cancelText}
           </button>
           <button className={`${classes.action_btn} ${classes.delete_btn}`}>

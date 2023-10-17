@@ -17,7 +17,10 @@ const StudentList = () => {
       <h2 className={classes.course_name}>Digital Computer Principle</h2>
       <p className={classes.sem_text}>Semester 01</p>
       <div className={classes.StudentList_text}>Students list</div>
-      <div className={classes.studentCard_container}>
+      <span className={classes.noStudent_container}>
+        No students have been added to this semester yet.
+      </span>
+      {/* <div className={classes.studentCard_container}>
         <div className={classes.studentCard}>
           <span className={classes.student_number}>01</span>
           <div className={classes.studentName_container}>
@@ -28,7 +31,7 @@ const StudentList = () => {
           </div>
           <span className={classes.reg_text}>Reg No: 367916</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

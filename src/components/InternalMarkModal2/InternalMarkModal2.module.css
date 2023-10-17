@@ -1,0 +1,55 @@
+.internalMarkModal_main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(56, 30, 114, 0.3);
+  display: grid;
+  place-items: center;
+  z-index: 1;
+}
+.internalMarkModal_card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2.8rem 1.8rem;
+  border-radius: 0.625rem;
+  background: #36343b;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+.heading_text {
+  width: 100%;
+  color: #e6e0e9;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.15px;
+  text-align: center;
+}
+.add_btn {
+  margin-left: auto;
+}
+.inputBorder {
+  border-color: #cac4d0 !important;
+}
+
+.labelRoot {
+  color: #cac4d0 !important;
+}
+
+.label_text {
+  margin-top: 2rem;
+  color: #e6e0e9;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.modal_closer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+}

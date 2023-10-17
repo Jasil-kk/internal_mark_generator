@@ -12,6 +12,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputLabel from "@mui/material/InputLabel";
 import SubmitButton from "../../components/SubmitButton/SubmitButton";
+import { FormHelperText } from "@mui/material";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,10 +43,14 @@ const Login = () => {
             InputLabelProps={{
               style: { color: "#CAC4D0" },
             }}
+            helperText="That username doesn't exist"
+            FormHelperTextProps={{
+              style: { color: "#EC928E" },
+            }}
           />
           <FormControl variant="outlined">
             <InputLabel
-              htmlFor="outlined-adornment-amount"
+              htmlFor="outlined-adornment-password"
               classes={{ root: classes.labelRoot }}
             >
               Password
@@ -73,9 +78,16 @@ const Login = () => {
                 notchedOutline: classes.inputBorder,
               }}
             />
+            <FormHelperText
+              id="outlined-adornment-password"
+              sx={{ color: "#EC928E" }}
+            >
+              The password you entered is incorrect
+            </FormHelperText>
           </FormControl>
           <div className={classes.login_btn}>
-          <SubmitButton text="Login"/></div>
+            <SubmitButton text="Login" />
+          </div>
         </form>
       </div>
       <p className={classes.label_text}>

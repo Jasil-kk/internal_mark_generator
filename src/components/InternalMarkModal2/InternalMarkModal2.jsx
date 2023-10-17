@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import classes from "./InternalMarkModal.module.css";
-import SubmitButton from "../../components/SubmitButton/SubmitButton";
+import classes from "./InternalMarkModal2.module.css";
+import SubmitButton from "../SubmitButton/SubmitButton";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
-const InternalMarkModal = (props) => {
+const InternalMarkModal2 = (props) => {
   const [data, setData] = useState({
-    se1: "",
-    se2: "",
-    se3: "",
-    assg1: "",
-    assg2: "",
-    assg3: "",
-    attendance: "",
+    test1: "",
+    test2: "",
+    roughRecordMark: "",
+    fairRecordMark: "",
+    labWorkMark: "",
+    openEndedMark: "",
+    attendanceInMark: "",
   });
 
   const handleFieldChange = (e, fieldName) => {
@@ -28,15 +28,15 @@ const InternalMarkModal = (props) => {
       <div className={classes.internalMarkModal_card}>
         <h2 className={classes.heading_text}>Add internal mark</h2>
         <label htmlFor="Series exam mark" className={classes.label_text}>
-          Series exam mark
+          Test mark
         </label>
         <Box
           component="form"
           sx={{
-            width: "34ch",
+            width: "25ch",
             display: "grid",
-            gridTemplateColumns: { sm: "1fr 1fr 1fr" },
-            gap: 2,
+            gridTemplateColumns: { sm: "1fr 1fr" },
+            gap: 3,
             marginTop: "1ch",
           }}
           noValidate
@@ -44,9 +44,9 @@ const InternalMarkModal = (props) => {
         >
           <TextField
             id="outlined-controlled"
-            label="SE1"
-            value={data.se1}
-            onChange={(e) => handleFieldChange(e, "se1")}
+            label="TEST1"
+            value={data.test1}
+            onChange={(e) => handleFieldChange(e, "test1")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -60,25 +60,9 @@ const InternalMarkModal = (props) => {
           />
           <TextField
             id="outlined-uncontrolled"
-            label="SE2"
-            value={data.se2}
-            onChange={(e) => handleFieldChange(e, "se2")}
-            InputProps={{
-              classes: {
-                root: classes.inputRoot,
-                notchedOutline: classes.inputBorder,
-              },
-              inputProps: { style: { color: "#CAC4D0" } },
-            }}
-            InputLabelProps={{
-              style: { color: "#CAC4D0" },
-            }}
-          />
-          <TextField
-            id="outlined-uncontrolled"
-            label="SE3"
-            value={data.se3}
-            onChange={(e) => handleFieldChange(e, "se3")}
+            label="TEST2"
+            value={data.test2}
+            onChange={(e) => handleFieldChange(e, "test2")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -91,26 +75,26 @@ const InternalMarkModal = (props) => {
             }}
           />
         </Box>
-        <label htmlFor="Series exam mark" className={classes.label_text}>
-          Assignment mark
-        </label>
         <Box
           component="form"
           sx={{
-            width: "34ch",
+            width: "40ch",
             display: "grid",
-            gridTemplateColumns: { sm: "1fr 1fr 1fr" },
-            gap: 2,
-            marginTop: "1ch",
+            gridTemplateColumns: { sm: "1fr 0.9fr" },
+            gap: 4,
+            marginTop: "5ch",
+            paddingTop: "5ch",
+            borderTop: "1px solid #5C5862"
+
           }}
           noValidate
           autoComplete="off"
         >
           <TextField
             id="outlined-controlled"
-            label="ASSG1"
-            value={data.assg1}
-            onChange={(e) => handleFieldChange(e, "assg1")}
+            label="Rough record mark"
+            value={data.roughRecordMark}
+            onChange={(e) => handleFieldChange(e, "roughRecordMark")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -124,25 +108,9 @@ const InternalMarkModal = (props) => {
           />
           <TextField
             id="outlined-uncontrolled"
-            label="ASSG2"
-            value={data.assg2}
-            onChange={(e) => handleFieldChange(e, "assg2")}
-            InputProps={{
-              classes: {
-                root: classes.inputRoot,
-                notchedOutline: classes.inputBorder,
-              },
-              inputProps: { style: { color: "#CAC4D0" } },
-            }}
-            InputLabelProps={{
-              style: { color: "#CAC4D0" },
-            }}
-          />
-          <TextField
-            id="outlined-uncontrolled"
-            label="ASSG3"
-            value={data.assg3}
-            onChange={(e) => handleFieldChange(e, "assg3")}
+            label="Fair record mark"
+            value={data.fairRecordMark}
+            onChange={(e) => handleFieldChange(e, "fairRecordMark")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -155,22 +123,65 @@ const InternalMarkModal = (props) => {
             }}
           />
         </Box>
-        <label htmlFor="Attendance in %" className={classes.label_text}>
-          Attendance in %
-        </label>
         <Box
           component="form"
           sx={{
-            width: "10ch",
-            marginTop: "1ch",
+            width: "38ch",
+            display: "grid",
+            gridTemplateColumns: { sm: "1fr 1.2fr" },
+            gap: 4,
+            marginTop: "5ch",
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-controlled"
+            label="Lab work mark"
+            value={data.labWorkMark}
+            onChange={(e) => handleFieldChange(e, "labWorkMark")}
+            InputProps={{
+              classes: {
+                root: classes.inputRoot,
+                notchedOutline: classes.inputBorder,
+              },
+              inputProps: { style: { color: "#CAC4D0" } },
+            }}
+            InputLabelProps={{
+              style: { color: "#CAC4D0" },
+            }}
+          />
+          <TextField
+            id="outlined-uncontrolled"
+            label="Open-ended mark"
+            value={data.openEndedMark}
+            onChange={(e) => handleFieldChange(e, "openEndedMark")}
+            InputProps={{
+              classes: {
+                root: classes.inputRoot,
+                notchedOutline: classes.inputBorder,
+              },
+              inputProps: { style: { color: "#CAC4D0" } },
+            }}
+            InputLabelProps={{
+              style: { color: "#CAC4D0" },
+            }}
+          />
+        </Box>
+        <Box
+          component="form"
+          sx={{
+            width: "19ch",
+            marginTop: "5ch",
           }}
           noValidate
           autoComplete="off"
         >
           <TextField
             id="outlined-uncontrolled"
-            value={data.attendance}
-            onChange={(e) => handleFieldChange(e, "attendance")}
+            label="Attendance in mark"
+            value={data.attendanceInMark}
+            onChange={(e) => handleFieldChange(e, "attendanceInMark")}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -192,4 +203,4 @@ const InternalMarkModal = (props) => {
   );
 };
 
-export default InternalMarkModal;
+export default InternalMarkModal2;

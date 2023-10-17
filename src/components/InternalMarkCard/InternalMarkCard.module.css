@@ -1,0 +1,68 @@
+.internaml_mark_card {
+  border-radius: 1.25rem;
+  background: #2b2930;
+  padding: 2rem 3.75rem 2rem 1.875rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.heading_text {
+  color: #d0bcff;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.15px;
+}
+.mark_text {
+  margin-top: 0.6rem;
+  border-radius: 0.625rem;
+  background: #4f378b;
+  padding: 0.5rem 0.75rem;
+  color: #e6e0e9;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+}
+.mark_container {
+  display: flex;
+  align-items: flex-start;
+  gap: 3.75rem;
+}
+.first_section {
+  display: flex;
+  flex-direction: column;
+}
+.internal_mark_label {
+  color: #cac4d0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  margin-bottom: 0.9rem;
+  margin-top: 2rem;
+}
+.row_container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.row_container2 {
+  margin-top: 2.5rem;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+.row_container3 {
+  margin-top: 2.5rem;
+}
+.border_line {
+  margin-top: 1.88rem;
+  width: 76%;
+  height: 0.75px;
+  background: #5c5862;
+}
+.second_section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

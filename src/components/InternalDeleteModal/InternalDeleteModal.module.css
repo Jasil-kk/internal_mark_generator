@@ -33,7 +33,7 @@
   letter-spacing: 0.01563rem;
 }
 .actions {
-  margin: 2.5rem 0 0 auto;
+  margin: 2rem 0 0 auto;
   display: flex;
   align-items: center;
   gap: 1.6rem;
@@ -45,7 +45,12 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 3px;
+  padding: 10px;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+.action_btn:hover {
+  background: #3d3c40;
 }
 .cancel_btn {
   color: #d0bcff;
@@ -53,6 +58,7 @@
 .delete_btn {
   color: #efb8c8;
 }
+
 .modal_closer {
   position: absolute;
   top: 0;

@@ -1,0 +1,37 @@
+.adminPanel_main {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+.admin_icon {
+  margin-top: 4.38rem;
+  width: 4.13rem;
+  height: 4.13rem;
+}
+.heading_text {
+  margin-top: 0.9rem;
+  color: #e6e0e9;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.03125rem;
+}
+.para_text {
+  margin-top: 0.3rem;
+  max-width: 13.8125rem;
+  text-align: center;
+  color: #938f99;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1rem;
+  letter-spacing: 0.03125rem;
+}
+.item_card_container {
+  margin-top: 2.75rem;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 1.88rem;
+}

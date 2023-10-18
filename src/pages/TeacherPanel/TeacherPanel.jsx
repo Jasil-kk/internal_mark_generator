@@ -4,6 +4,7 @@ import Face3Icon from "@mui/icons-material/Face3";
 import IconButton from "@mui/material/IconButton";
 import arrow from "../../assets/arrow_circle_right.svg";
 import InternalDeleteModal from "../../components/InternalDeleteModal/InternalDeleteModal";
+import LogoutBtn from "../../components/LogoutBtn/LogoutBtn";
 
 const TeacherPanel = () => {
   const [logoutModal, setLogoutModal] = useState(false);
@@ -28,9 +29,7 @@ const TeacherPanel = () => {
           <div className={classes.teacherPanel_dot}></div>
           <p className={classes.teacherPanel_course_text}>Software Testing</p>
         </div>
-        <button className={classes.logout_btn} onClick={handleLogoutModal}>
-          Logout
-        </button>
+        <LogoutBtn onClick={handleLogoutModal} />
         <div className={classes.sem_card_container}>
           <div className={classes.sem_card}>
             <span className={classes.sem_text}>Semester</span>

@@ -34,23 +34,6 @@
   background: #938f99;
   border-radius: 50%;
 }
-.logout_btn {
-  margin-top: 1rem;
-  border-radius: 6.25rem;
-  background: transparent;
-  padding: 0.65rem 1.5rem;
-  border: 1px solid #938f99;
-  color: #d0bcff;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.logout_btn:hover {
-  background: #d0bcff;
-  color: #141218;
-}
 .sem_card_container {
   margin-top: 3.5rem;
   display: grid;

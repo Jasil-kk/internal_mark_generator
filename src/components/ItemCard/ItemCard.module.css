@@ -1,0 +1,44 @@
+.item_card {
+  border-radius: 0.82781rem;
+  background: #d0bcff;
+  overflow: hidden;
+  cursor: pointer;
+}
+.first_sec {
+  display: grid;
+  place-items: center;
+  padding: 2.25rem;
+}
+.background_icon {
+  width: 6.25rem;
+  height: 6.25rem;
+}
+.second_sec {
+  width: 17.5rem;
+  padding: 0.5rem 0.8rem;
+  background: #eaddff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.details {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.name_text {
+  color: #141218;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.count_text {
+  color: #36343b;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.03125rem;
+}
+.label_icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}

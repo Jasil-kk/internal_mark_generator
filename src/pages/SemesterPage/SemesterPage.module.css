@@ -5,17 +5,6 @@
   flex-direction: column;
   justify-content: flex-start;
 }
-.semesterPage_header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding: 1.5rem 5%;
-}
-.administrator {
-  margin-left: 1.56rem;
-  width: 160px;
-  height: 40px;
-}
 .noSem_container {
   width: 100%;
   height: calc(100% - 200px);

@@ -1,0 +1,11 @@
+.semesterPage_header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 5%;
+  }
+  .administrator {
+    margin-left: 1.56rem;
+    width: 160px;
+    height: 40px;
+  }

@@ -45,6 +45,7 @@ const AddSubjectModal = (props) => {
                 root: classes.inputRoot,
                 notchedOutline: classes.inputBorder,
               },
+
               style: { color: "#CAC4D0" },
             }}
             MenuProps={{

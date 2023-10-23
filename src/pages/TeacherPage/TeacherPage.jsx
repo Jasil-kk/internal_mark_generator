@@ -52,8 +52,8 @@ const TeacherPage = () => {
               </span>
             </div>
             <div className={classes.details_row}>
-              <label htmlFor="username">password:</label>
-              <span id="username" className={classes.card_content}>
+              <label htmlFor="password">password:</label>
+              <span id="password" className={classes.card_content}>
                 1234876
               </span>
             </div>

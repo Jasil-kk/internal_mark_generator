@@ -3,6 +3,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
 }
 .noStudents_container {
@@ -22,4 +23,83 @@
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.01563rem;
+}
+.allStudents_container {
+  width: 100%;
+  height: 100%;
+  padding: 2rem 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5rem;
+  overflow: auto;
+}
+.allStudents_container::-webkit-scrollbar {
+  width: 6px;
+}
+.allStudents_container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.allStudents_container::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.allStudents_container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.each_sem_section {
+}
+.semester_label {
+  border-radius: 3.125rem;
+  background: #381e72;
+  padding: 0.3rem 0.625rem;
+  color: #e6e0e9;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03125rem;
+}
+.student_card_container {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+.student_card {
+  width: 24rem;
+  height: 8rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #49454f;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+.card_heading {
+  color: #e6e0e9;
+  font-size: 1.375rem;
+  font-weight: 400;
+  text-transform: capitalize;
+}
+.details_row {
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #e6e0e9;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.01563rem;
+}
+.card_label {
+  color: #938f99;
+}
+.delte_icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
 }

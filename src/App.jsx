@@ -1,10 +1,10 @@
 import "./App.css";
-import StudentsPage from "./pages/StudentsPage/StudentsPage";
+import InternalMarkPage from "./pages/InternalMarkPage/InternalMarkPage";
 
 function App() {
   return (
     <div className="app">
-      <StudentsPage />
+      <InternalMarkPage />
     </div>
   );
 }

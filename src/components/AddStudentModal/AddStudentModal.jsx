@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import classes from "./AddSubjectModal.module.css";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import classes from "./AddStudentModal.module.css";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 let theme = createTheme({});
@@ -22,14 +24,23 @@ theme = createTheme(theme, {
   },
 });
 
-const AddSubjectModal = (props) => {
+const AddStudentModal = (props) => {
   const [data, setData] = useState({
     semester: "",
-    subject: "",
+    fullName: "",
+    rollNo: "",
+    regNo: "",
   });
-
   const handleChange = (e) => {
     setData({ ...data, semester: e.target.value });
+  };
+
+  const handleNumberFieldChange = (e, fieldName) => {
+    const formattedNumber = e.target.value.replace(/\D/g, "");
+
+    if (formattedNumber) {
+      setData({ ...data, [fieldName]: formattedNumber });
+    }
   };
 
   const semesters = [
@@ -43,11 +54,11 @@ const AddSubjectModal = (props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.addSubjectModal_main}>
-        <div className={classes.addSubjectModal_card}>
-          <h3 className={classes.heading_text}>Add subject</h3>
+      <div className={classes.addStudentModal_main}>
+        <div className={classes.addStudentModal_card}>
+          <h2 className={classes.heading_text}>Add student</h2>
           <p className={classes.para_text}>
-            Select the semester to which you want to add the subject.
+            Select the semester to which you want to add the student.
           </p>
           <FormControl fullWidth sx={{ marginTop: 3 }}>
             <InputLabel
@@ -88,7 +99,7 @@ const AddSubjectModal = (props) => {
             >
               {semesters.map((semester) => (
                 <MenuItem
-                key={semester}
+                  key={semester}
                   value={semester}
                   sx={{
                     padding: "10px 25px",
@@ -100,12 +111,11 @@ const AddSubjectModal = (props) => {
               ))}
             </Select>
           </FormControl>
-
           <TextField
             id="outlined-controlled"
-            label="Subject name"
-            value={data.subject}
-            onChange={(e) => setData({ ...data, subject: e.target.value })}
+            label="Full name"
+            value={data.fullName}
+            onChange={(e) => setData({ ...data, fullName: e.target.value })}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -118,7 +128,40 @@ const AddSubjectModal = (props) => {
             }}
             sx={{ marginTop: 3 }}
           />
-
+          <TextField
+            id="outlined-controlled"
+            label="Roll no."
+            value={data.rollNo}
+            onChange={(e) => handleNumberFieldChange(e, "rollNo")}
+            InputProps={{
+              classes: {
+                root: classes.inputRoot,
+                notchedOutline: classes.inputBorder,
+              },
+              inputProps: { style: { color: "#CAC4D0" } },
+            }}
+            InputLabelProps={{
+              style: { color: "#CAC4D0" },
+            }}
+            sx={{ marginTop: 3 }}
+          />{" "}
+          <TextField
+            id="outlined-controlled"
+            label="Reg no."
+            value={data.regNo}
+            onChange={(e) => handleNumberFieldChange(e, "regNo")}
+            InputProps={{
+              classes: {
+                root: classes.inputRoot,
+                notchedOutline: classes.inputBorder,
+              },
+              inputProps: { style: { color: "#CAC4D0" } },
+            }}
+            InputLabelProps={{
+              style: { color: "#CAC4D0" },
+            }}
+            sx={{ marginTop: 3 }}
+          />
           <Stack spacing={2} direction="row" marginTop={5} marginLeft={"auto"}>
             <Button
               variant="text"
@@ -149,10 +192,11 @@ const AddSubjectModal = (props) => {
             </Button>
           </Stack>
         </div>
+
         <div className={classes.modal_closer} onClick={props.handleModal}></div>
       </div>
     </ThemeProvider>
   );
 };
 
-export default AddSubjectModal;
+export default AddStudentModal;

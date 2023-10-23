@@ -1,0 +1,25 @@
+.studentsPage_main {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.noStudents_container {
+  width: 100%;
+  height: calc(100% - 200px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.students_icon {
+  width: 13rem;
+  height: 13rem;
+}
+.noStudents_text {
+  color: #938f99;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.01563rem;
+}

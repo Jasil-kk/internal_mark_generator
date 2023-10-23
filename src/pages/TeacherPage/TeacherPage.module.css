@@ -23,3 +23,48 @@
   font-weight: 400;
   letter-spacing: 0.01563rem;
 }
+.teacher_card_container {
+  margin-top: 5rem;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  gap: 1rem;
+}
+.teacher_card {
+  width: 24rem;
+  height: 8rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #49454f;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+.card_heading {
+  color: #e6e0e9;
+  font-size: 1.375rem;
+  font-weight: 400;
+}
+.details_row {
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #e6e0e9;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.01563rem;
+}
+.card_content {
+  color: #9a82db;
+}
+.delte_icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}

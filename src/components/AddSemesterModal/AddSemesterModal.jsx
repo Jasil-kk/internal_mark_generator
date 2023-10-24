@@ -23,6 +23,29 @@ const AddSemesterModal = (props) => {
     }
   };
 
+  
+
+  const handleAddSemester = () => {
+    let formatedCount = "";
+    if(count === 1) {
+      formatedCount = "first semester"
+    }
+    if(count === 2) {
+      formatedCount = "second semester"
+    } if(count === 3) {
+      formatedCount = "third semester"
+    } if(count === 4) {
+      formatedCount = "fourth semester"
+    } if(count === 5) {
+      formatedCount = "fifth semester"
+    } if(count === 6) {
+      formatedCount = "sixth semester"
+    }
+    props.handleAdd(formatedCount);
+  }
+  console.log(count);
+
+
   const formattedCount = count.toString().padStart(2, "0");
   return (
     <div className={classes.addSemesterModal_main}>
@@ -88,6 +111,7 @@ const AddSemesterModal = (props) => {
               borderRadius: 6,
               textTransform: "capitalize",
             }}
+            onClick={handleAddSemester}
           >
             Add
           </Button>

@@ -14,7 +14,7 @@ const InternalDeleteModal = (props) => {
           >
             {props.cancelText}
           </button>
-          <button className={`${classes.action_btn} ${classes.delete_btn}`}>
+          <button className={`${classes.action_btn} ${classes.delete_btn}`} onClick={props.handleAccept}>
             {props.acceptText}
           </button>
         </div>

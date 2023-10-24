@@ -23,7 +23,8 @@ const Login = () => {
   const [data, setData] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const [open, setOpen] = useState({ open: false, type:"info", text: "" });
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState({ open: false, type: "info", text: "" });
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -39,12 +40,14 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (data.username === "" || data.password === "") {
       setOpen({
         open: true,
         type: "warning",
         text: " Username or Password cannot be empty.",
       });
+      setIsLoading(false);
       return;
     }
     axiosApi
@@ -52,6 +55,8 @@ const Login = () => {
       .then((response) => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
+        setIsLoading(false);
+        window.location.reload();
       })
       .catch((error) => {
         setOpen({
@@ -59,6 +64,7 @@ const Login = () => {
           type: "error",
           text: "Usename or Password is incorrect!",
         });
+        setIsLoading(false);
       });
   };
 
@@ -120,7 +126,11 @@ const Login = () => {
             />
           </FormControl>
           <div className={classes.login_btn}>
-            <SubmitButton text="Login" onClick={handleLogin} />
+            <SubmitButton
+              text="Login"
+              onClick={handleLogin}
+              isLoading={isLoading}
+            />
           </div>
         </form>
       </div>

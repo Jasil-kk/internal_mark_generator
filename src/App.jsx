@@ -1,10 +1,12 @@
 import "./App.css";
-import InternalMarkPage from "./pages/InternalMarkPage/InternalMarkPage";
+import Login from "./pages/Login/Login"
+import AdminPanel from "./pages/AdminPanel/AdminPanel";
 
 function App() {
   return (
     <div className="app">
-      <InternalMarkPage />
+      {/* <AdminPanel /> */}
+      <Login/>
     </div>
   );
 }

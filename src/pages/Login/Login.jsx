@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import classes from "./Login.module.css";
 import logo from "../../assets/logo.svg";
-import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -12,14 +11,55 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputLabel from "@mui/material/InputLabel";
 import SubmitButton from "../../components/SubmitButton/SubmitButton";
-import { FormHelperText } from "@mui/material";
+import axiosApi from "../../AxiosMethod";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Login = () => {
+  const [data, setData] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const [open, setOpen] = useState({ open: false, type:"info", text: "" });
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen({ open: false });
+  };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (data.username === "" || data.password === "") {
+      setOpen({
+        open: true,
+        type: "warning",
+        text: " Username or Password cannot be empty.",
+      });
+      return;
+    }
+    axiosApi
+      .post("/projectaccount/login/", data)
+      .then((response) => {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.role);
+      })
+      .catch((error) => {
+        setOpen({
+          open: true,
+          type: "error",
+          text: "Usename or Password is incorrect!",
+        });
+      });
   };
 
   return (
@@ -33,6 +73,8 @@ const Login = () => {
             id="outlined-basic"
             label="Username"
             variant="outlined"
+            value={data.username}
+            onChange={(e) => setData({ ...data, username: e.target.value })}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -43,10 +85,6 @@ const Login = () => {
             InputLabelProps={{
               style: { color: "#CAC4D0" },
             }}
-            helperText="That username doesn't exist"
-            FormHelperTextProps={{
-              style: { color: "#EC928E" },
-            }}
           />
           <FormControl variant="outlined">
             <InputLabel
@@ -56,6 +94,8 @@ const Login = () => {
               Password
             </InputLabel>
             <OutlinedInput
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
               id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
               endAdornment={
@@ -78,21 +118,29 @@ const Login = () => {
                 notchedOutline: classes.inputBorder,
               }}
             />
-            <FormHelperText
-              id="outlined-adornment-password"
-              sx={{ color: "#EC928E" }}
-            >
-              The password you entered is incorrect
-            </FormHelperText>
           </FormControl>
           <div className={classes.login_btn}>
-            <SubmitButton text="Login" />
+            <SubmitButton text="Login" onClick={handleLogin} />
           </div>
         </form>
       </div>
       <p className={classes.label_text}>
         ©Internal Mark Generator for Diploma Revision 2021
       </p>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={open.open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={open.type}
+          sx={{ width: "100%" }}
+        >
+          {open.text}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

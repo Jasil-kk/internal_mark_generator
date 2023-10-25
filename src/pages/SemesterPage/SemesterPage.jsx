@@ -53,7 +53,6 @@ const SemesterPage = () => {
 
   // Semester Adding Function
   const handleAddSemester = (semester) => {
-    console.log(semester);
     axiosApi
       .post("/store/semester/", { name: semester })
       .then((response) => {
@@ -93,7 +92,6 @@ const SemesterPage = () => {
         });
       })
       .catch((error) => {
-        console.error("Error", error);
         handleDeleteSemesterModal();
         setOpen({
           open: true,
@@ -103,28 +101,6 @@ const SemesterPage = () => {
       });
   };
 
-  const checkedSemName = (name) => {
-    let formattedName = "";
-    if (name === "first semester") {
-      formattedName = "semester 01";
-    }
-    if (name === "second semester") {
-      formattedName = "semester 02";
-    }
-    if (name === "third semester") {
-      formattedName = "semester 03";
-    }
-    if (name === "fourth semester") {
-      formattedName = "semester 04";
-    }
-    if (name === "fifth semester") {
-      formattedName = "semester 05";
-    }
-    if (name === "sixth semester") {
-      formattedName = "semester 06";
-    }
-    return formattedName;
-  };
   return (
     <>
       <div className={classes.semesterPage_main}>
@@ -133,9 +109,7 @@ const SemesterPage = () => {
           <div className={classes.sem_card_container}>
             {semesters?.map((semester) => (
               <div key={semester?.id} className={classes.sem_card}>
-                <h5 className={classes.card_heading}>
-                  {checkedSemName(semester?.name)}
-                </h5>
+                <h5 className={classes.card_heading}>{semester?.name}</h5>
                 <span className={classes.card_content}>0 Subjects</span>
                 <span className={classes.card_content}>0 Teachers</span>
                 <span className={classes.card_content}>0 Students</span>
@@ -182,9 +156,7 @@ const SemesterPage = () => {
           handleAccept={handleDeleteSemester}
           handleCancel={handleDeleteSemesterModal}
           heading="Delete semester"
-          para={`Deleting the ${checkedSemName(
-            singleSemester?.semesterName
-          )} will delete all the subjects and students associated with the semester.`}
+          para={`Deleting the ${singleSemester?.semesterName} will delete all the subjects and students associated with the semester.`}
           cancelText="Cancel"
           acceptText="Delete"
         />

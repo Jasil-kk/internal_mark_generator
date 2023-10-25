@@ -23,28 +23,18 @@ const AddSemesterModal = (props) => {
     }
   };
 
-  
-
   const handleAddSemester = () => {
-    let formatedCount = "";
-    if(count === 1) {
-      formatedCount = "first semester"
-    }
-    if(count === 2) {
-      formatedCount = "second semester"
-    } if(count === 3) {
-      formatedCount = "third semester"
-    } if(count === 4) {
-      formatedCount = "fourth semester"
-    } if(count === 5) {
-      formatedCount = "fifth semester"
-    } if(count === 6) {
-      formatedCount = "sixth semester"
-    }
+    const semesterNames = [
+      "semester 01",
+      "semester 02",
+      "semester 03",
+      "semester 04",
+      "semester 05",
+      "semester 06",
+    ];
+    const formatedCount = semesterNames[count - 1] || "";
     props.handleAdd(formatedCount);
-  }
-  console.log(count);
-
+  };
 
   const formattedCount = count.toString().padStart(2, "0");
   return (

@@ -35,8 +35,14 @@
 .inputBorder {
   border-color: #cac4d0 !important;
 }
+.disableBorder {
+  border-color: #E6E0E91F !important;
+}
 .labelRoot {
   color: #cac4d0 !important;
+}
+.disableRoot {
+  color: #E6E0E91F !important;
 }
 
 .modal_closer {

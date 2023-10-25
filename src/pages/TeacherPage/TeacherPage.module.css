@@ -32,8 +32,8 @@
 }
 .teacher_card {
   width: 24rem;
-  height: 8rem;
-  padding: 1rem;
+  height: 10.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.75rem;
   border: 1px solid #49454f;
   display: flex;
@@ -50,7 +50,7 @@
 .details_row {
   margin-top: 2px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 5px;
   color: #e6e0e9;
   font-size: 0.875rem;
@@ -59,6 +59,37 @@
 }
 .card_content {
   color: #9a82db;
+}
+.subjectList_container {
+  margin-top: 5px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 4rem;
+  overflow: auto;
+}
+.subjectList_container::-webkit-scrollbar {
+  width: 3px;
+}
+.subjectList_container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+.subjectList_container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+.subjectList {
+  color: #e6e0e9;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.01563rem;
+  text-transform: capitalize;
+  background: #353437;
+  padding: 2px 8px;
+  border-radius: 12px;
 }
 .delte_icon {
   position: absolute;

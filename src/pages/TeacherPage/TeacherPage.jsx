@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./TeacherPage.module.css";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import faceIcon from "../../assets/face_dark.png";
@@ -6,10 +6,19 @@ import deleteIcon from "../../assets/delete_pink.svg";
 import AddTeacherModal from "../../components/AddTeacherModal/AddTeacherModal";
 import SelectSubjectModal from "../../components/SelectSubjectModal/SelectSubjectModal";
 import InternalDeleteModal from "../../components/InternalDeleteModal/InternalDeleteModal";
+import axiosApi from "../../AxiosMethod";
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 
 const TeacherPage = () => {
   const [addTeacher, setAddTeacher] = useState(false);
   const [selectSubject, setSelectSubject] = useState(false);
+  const [teachers, setTeachers] = useState([]);
   const [deleteTeacher, setDeleteTeacher] = useState(false);
 
   const handleAddTeacherModal = () => {
@@ -30,6 +39,16 @@ const TeacherPage = () => {
     }
     return str.slice(0, 25) + "...";
   }
+
+  // Teachers Getting
+  useEffect(() => {
+    axiosApi.get("/store/teacher/registration/").then((response) => {
+      setTeachers(response.data);
+    });
+  }, []);
+
+  console.log(teachers);
+
   return (
     <>
       <div className={classes.teacherPage_main}>
@@ -56,6 +75,18 @@ const TeacherPage = () => {
               <span id="password" className={classes.card_content}>
                 1234876
               </span>
+            </div>
+            <div className={classes.details_row}>
+              <label htmlFor="subjects">subjects:</label>
+              <ul id="subjects" className={classes.subjectList_container}>
+                <li className={classes.subjectList}>hello</li>
+                <li className={classes.subjectList}>Dcp</li>
+                <li className={classes.subjectList}>this is me</li>
+                <li className={classes.subjectList}>engineering mathematics</li>
+                <li className={classes.subjectList}>
+                  didgital computer principles
+                </li>
+              </ul>
             </div>
             <img
               src={deleteIcon}

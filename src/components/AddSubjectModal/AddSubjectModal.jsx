@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./AddSubjectModal.module.css";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axiosApi from "../../AxiosMethod";
 
 let theme = createTheme({});
 theme = createTheme(theme, {
@@ -23,23 +24,30 @@ theme = createTheme(theme, {
 });
 
 const AddSubjectModal = (props) => {
+  const [semesters, setSemesters] = useState([]);
+  const [disabled, setDisabled] = useState(true);
   const [data, setData] = useState({
     semester: "",
     subject: "",
+    subjectType: "",
   });
 
-  const handleChange = (e) => {
-    setData({ ...data, semester: e.target.value });
-  };
+  useEffect(() => {
+    axiosApi.get("/store/semester/").then((response) => {
+      setSemesters(response.data);
+    });
+  }, []);
 
-  const semesters = [
-    "semester 01",
-    "semester 02",
-    "semester 03",
-    "semester 04",
-    "semester 05",
-    "semester 06",
-  ];
+  const subjectTypes = ["Theory", "Lab"];
+
+  const handleAddProduct = () => {
+    const input = {
+      semester: data.semester,
+      name: data.subject,
+      role: data.subjectType,
+    };
+    props.handleAdd(input);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -61,7 +69,10 @@ const AddSubjectModal = (props) => {
               id="demo-simple-select"
               value={data.semester}
               label="Select semester"
-              onChange={handleChange}
+              onChange={(e) => {
+                setData({ ...data, semester: e.target.value });
+                setDisabled(false);
+              }}
               sx={{
                 color: "#CAC4D0",
                 "& .MuiOutlinedInput-notchedOutline": {
@@ -88,36 +99,100 @@ const AddSubjectModal = (props) => {
             >
               {semesters.map((semester) => (
                 <MenuItem
-                key={semester}
-                  value={semester}
+                  key={semester?.id}
+                  value={semester?.id}
                   sx={{
                     padding: "10px 25px",
                     ":hover": { background: "#E6E0E914" },
                   }}
                 >
-                  {semester}
+                  {semester?.name}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
 
           <TextField
+            disabled={disabled ? true : false}
             id="outlined-controlled"
             label="Subject name"
             value={data.subject}
             onChange={(e) => setData({ ...data, subject: e.target.value })}
             InputProps={{
               classes: {
-                root: classes.inputRoot,
-                notchedOutline: classes.inputBorder,
+                root: disabled ? classes.disableRoot : classes.inputRoot,
+                notchedOutline: disabled
+                  ? classes.disableBorder
+                  : classes.inputBorder,
               },
               inputProps: { style: { color: "#CAC4D0" } },
             }}
             InputLabelProps={{
-              style: { color: "#CAC4D0" },
+              style: { color: disabled ? "#E6E0E91F" : "#CAC4D0" },
             }}
             sx={{ marginTop: 3 }}
           />
+
+          <FormControl
+            fullWidth
+            sx={{ marginTop: 3 }}
+            disabled={disabled ? true : false}
+          >
+            <InputLabel
+              id="demo-simple-select-label"
+              classes={{
+                root: disabled ? classes.disableRoot : classes.labelRoot,
+              }}
+            >
+              Subject type
+            </InputLabel>
+            <Select
+              disabled={disabled ? true : false}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={data.subjectType}
+              label="Subject type"
+              onChange={(e) =>
+                setData({ ...data, subjectType: e.target.value })
+              }
+              sx={{
+                color: "#CAC4D0",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: disabled ? "#E6E0E91F" : "#CAC4D0",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: disabled ? "#E6E0E91F" : "#CAC4D0",
+                },
+                "& .MuiSelect-icon": {
+                  color: disabled ? "#E6E0E91F" : "#CAC4D0",
+                },
+              }}
+              color="salmon"
+              MenuProps={{
+                MenuListProps: {
+                  style: {
+                    background: "#211F26",
+                    color: "#E6E0E9",
+                    boxShadow:
+                      " 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)",
+                  },
+                },
+              }}
+            >
+              {subjectTypes.map((subjectType) => (
+                <MenuItem
+                  key={subjectType}
+                  value={subjectType}
+                  sx={{
+                    padding: "10px 25px",
+                    ":hover": { background: "#E6E0E914" },
+                  }}
+                >
+                  {subjectType}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <Stack spacing={2} direction="row" marginTop={5} marginLeft={"auto"}>
             <Button
@@ -144,6 +219,7 @@ const AddSubjectModal = (props) => {
                 textTransform: "capitalize",
                 ":hover": { background: "rgba(208, 188, 255, 0.08)" },
               }}
+              onClick={handleAddProduct}
             >
               Add
             </Button>

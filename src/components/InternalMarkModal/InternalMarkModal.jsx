@@ -18,10 +18,12 @@ const InternalMarkModal = (props) => {
   const handleFieldChange = (e, fieldName) => {
     const formattedNumber = e.target.value.replace(/\D/g, "");
 
-    if (formattedNumber.length <= 2) {
+    if (formattedNumber.length <= 3) {
       setData({ ...data, [fieldName]: formattedNumber });
     }
   };
+
+
 
   return (
     <div className={classes.internalMarkModal_main}>

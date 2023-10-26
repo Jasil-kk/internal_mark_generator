@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./StudentsPage.module.css";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import school from "../../assets/school_dark.png";
@@ -7,16 +7,57 @@ import AddStudentModal from "../../components/AddStudentModal/AddStudentModal";
 import InternalDeleteModal from "../../components/InternalDeleteModal/InternalDeleteModal";
 import { Button, Menu, MenuItem } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import axiosApi from "../../AxiosMethod";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 const StudentsPage = () => {
   const [addStudent, setAddStudent] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [semesters, setSemesters] = useState([]);
+  const [studentId, setStudentId] = useState("");
+  const [filterItem, setFilterItem] = useState("All Semesters");
+  const [selectedMenuItem, setSelectedMenuItem] = useState("All Semesters");
   const [deleteStudent, setDeleteStudent] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    type: "info",
+    text: "",
+  });
+
+  const handleSnackClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackbar({ open: false });
+  };
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+
+  const handleClose = (id) => {
+    if (id) {
+      setFilterItem(id);
+      setSelectedMenuItem(id);
+      if (id === "All Semesters") {
+        axiosApi.get("/store/student/add/").then((response) => {
+          setStudents(response.data);
+        });
+      } else {
+        axiosApi
+          .get(`/store/student/add/?semester_id=${id}`)
+          .then((response) => {
+            setStudents(response.data);
+          });
+      }
+    }
     setAnchorEl(null);
   };
 
@@ -24,7 +65,10 @@ const StudentsPage = () => {
     setAddStudent(!addStudent);
   };
 
-  const handleDeleteStudentModal = () => {
+  const handleDeleteStudentModal = (id) => {
+    if (id) {
+      setStudentId(id);
+    }
     setDeleteStudent(!deleteStudent);
   };
 
@@ -35,26 +79,113 @@ const StudentsPage = () => {
     return str.slice(0, 25) + "...";
   }
 
-  const filterItems = [
-    "All Semesters",
-    "Semester 01",
-    "Semester 02",
-    "Semester 03",
-    "Semester 04",
-    "Semester 05",
-    "Semester 06",
-  ];
+  useEffect(() => {
+    axiosApi.get("/store/semester/").then((response) => {
+      setSemesters(response.data);
+    });
+  }, [filterItem]);
+
+  // Students Get
+  useEffect(() => {
+    if (filterItem === "All Semesters") {
+      axiosApi.get("/store/student/add/").then((response) => {
+        setStudents(response.data);
+      });
+    }
+    if (filterItem === "2") {
+      axiosApi.get(`/store/student/add/?semester_id=${1}`).then((response) => {
+        console.log(response.data);
+      });
+    }
+  }, []);
+
+  const studentsBySemester = students.reduce((acc, student) => {
+    const semesterName = student.semester_name;
+    if (!acc[semesterName]) {
+      acc[semesterName] = [];
+    }
+    acc[semesterName].push(student);
+    return acc;
+  }, {});
+
+  // Filtering Student
+  const handleGetStudent = () => {
+    axiosApi.get(`/store/student/add/?semester_id=${1}`).then((response) => {
+      console.log(response.data);
+    });
+  };
+
+  // Students Adding Function
+  const handleAddStudent = (input) => {
+    if (
+      !input.semester ||
+      !input.name ||
+      !input.register_number ||
+      !input.roll_number
+    ) {
+      setSnackbar({
+        open: true,
+        type: "warning",
+        text: "Please fill in all the fields.",
+      });
+      return;
+    }
+
+    axiosApi
+      .post("/store/student/add/", input)
+      .then((response) => {
+        handleAddStudentModal();
+        setSnackbar({
+          open: true,
+          type: "success",
+          text: "Student Added Successfully",
+        });
+        axiosApi.get("/store/student/add/").then((response) => {
+          setStudents(response.data);
+        });
+      })
+      .catch((error) => {
+        handleAddStudentModal();
+        setSnackbar({
+          open: true,
+          type: "error",
+          text: "Adding Student Failed",
+        });
+      });
+  };
+
+  // Students Deleting Function
+  const handleDeleteStudent = () => {
+    axiosApi
+      .delete(`/store/student/add/${studentId}/`)
+      .then((response) => {
+        console.log(response.data);
+        setSnackbar({
+          open: true,
+          type: "success",
+          text: "Student Deleted Successfully",
+        });
+        axiosApi.get("/store/student/add/").then((response) => {
+          setStudents(response.data);
+        });
+        handleDeleteStudentModal();
+      })
+      .catch((error) => {
+        setSnackbar({
+          open: true,
+          type: "error",
+          text: "Deleting Student Failed",
+        });
+        handleDeleteStudentModal();
+      });
+  };
 
   return (
     <>
       <div className={classes.studentsPage_main}>
         <PageHeader navText="Students" addClick={handleAddStudentModal} />
-        {/* <div className={classes.noStudents_container}>
-        <img src={school} alt="Icon" className={classes.students_icon} />
-        <p className={classes.noStudents_text}>
-          No students added. Click '+' add students to each semester.
-        </p>
-      </div> */}
+        {/* {students.length !== 0 ? ( */}
+        {/* <> */}
         <Button
           sx={{
             marginLeft: "10%",
@@ -83,54 +214,108 @@ const StudentsPage = () => {
               color: "#E6E0E9",
               minWidth: "200px",
               borderRadius: "5px",
-              boxShadow: "none",
             },
           }}
         >
-          {filterItems.map((item) => (
+          <MenuItem
+            sx={{
+              padding: "15px",
+              ":hover": { background: "#2e2c31" },
+              backgroundColor:
+                selectedMenuItem === "All Semesters" ? "#3b3449" : "inherit",
+            }}
+            onClick={() => handleClose("All Semesters")}
+          >
+            All Semesters
+          </MenuItem>
+          {semesters.map((semester) => (
             <MenuItem
-              key={item}
-              sx={{ padding: "15px", ":hover": { background: "#2e2c31" } }}
-              onClick={handleClose}
+              key={semester?.id}
+              sx={{
+                padding: "15px",
+                ":hover": { background: "#2e2c31" },
+                backgroundColor:
+                  selectedMenuItem === semester?.id ? "#3b3449" : "inherit",
+              }}
+              onClick={() => handleClose(semester?.id)}
             >
-              {item}
+              {semester?.name}
             </MenuItem>
           ))}
         </Menu>
-        <div className={classes.allStudents_container}>
-          <div className={classes.each_sem_section}>
-            <span className={classes.semester_label}>Semester 01</span>
-            <div className={classes.student_card_container}>
-              <div className={classes.student_card}>
-                <h5 className={classes.card_heading}>
-                  {nameReducer("Christopher Walken")}
-                </h5>
-                <div className={classes.details_row}>
-                  <label htmlFor="rollNo" className={classes.card_label}>
-                    Roll no. :
-                  </label>
-                  <span id="rollNo">19</span>
+        {students.length !== 0 ? (
+          <div className={classes.allStudents_container}>
+            {Object.entries(studentsBySemester).map(
+              ([semesterName, studentDetails]) => (
+                <div key={semesterName} className={classes.each_sem_section}>
+                  <span className={classes.semester_label}>{semesterName}</span>
+                  <div className={classes.student_card_container}>
+                    {studentDetails.map((student) => (
+                      <div key={student?.id} className={classes.student_card}>
+                        <h5 className={classes.card_heading}>
+                          {nameReducer(student?.name)}
+                        </h5>
+                        <div className={classes.details_row}>
+                          <label
+                            htmlFor="rollNo"
+                            className={classes.card_label}
+                          >
+                            Roll no. :
+                          </label>
+                          <span id="rollNo">{student?.roll_number}</span>
+                        </div>
+                        <div className={classes.details_row}>
+                          <label htmlFor="regNo" className={classes.card_label}>
+                            Reg no. :
+                          </label>
+                          <span id="regNo">{student?.register_number}</span>
+                        </div>
+                        <img
+                          src={deleteIcon}
+                          alt="Delete Icon"
+                          className={classes.delte_icon}
+                          onClick={() => handleDeleteStudentModal(student?.id)}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className={classes.details_row}>
-                  <label htmlFor="regNo" className={classes.card_label}>
-                    Reg no. :
-                  </label>
-                  <span id="regNo">36951767</span>
-                </div>
-                <img
-                  src={deleteIcon}
-                  alt="Delete Icon"
-                  className={classes.delte_icon}
-                  onClick={handleDeleteStudentModal}
-                />
-              </div>
-            </div>
+              )
+            )}
           </div>
-        </div>
+        ) : (
+          <div className={classes.noStudents_container}>
+            <img src={school} alt="Icon" className={classes.students_icon} />
+            <p className={classes.noStudents_text}>
+              No students have been added to this semester yet. Click the "+"
+              button to add students.
+            </p>
+          </div>
+        )}
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={snackbar.open}
+          autoHideDuration={3000}
+          onClose={handleSnackClose}
+        >
+          <Alert
+            onClose={handleSnackClose}
+            severity={snackbar.type}
+            sx={{ width: "100%" }}
+          >
+            {snackbar.text}
+          </Alert>
+        </Snackbar>
       </div>
-      {addStudent && <AddStudentModal handleModal={handleAddStudentModal} />}
+      {addStudent && (
+        <AddStudentModal
+          handleAdd={handleAddStudent}
+          handleModal={handleAddStudentModal}
+        />
+      )}
       {deleteStudent && (
         <InternalDeleteModal
+          handleAccept={handleDeleteStudent}
           handleCancel={handleDeleteStudentModal}
           heading="Delete student"
           para="Are you sure you want to delete the student?"

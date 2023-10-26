@@ -31,6 +31,7 @@
 .first_section {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 .internal_mark_label {
   color: #cac4d0;

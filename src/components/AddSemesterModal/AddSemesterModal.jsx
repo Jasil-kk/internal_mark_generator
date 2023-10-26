@@ -34,9 +34,11 @@ const AddSemesterModal = (props) => {
     ];
     const formatedCount = semesterNames[count - 1] || "";
     props.handleAdd(formatedCount);
+    
   };
 
   const formattedCount = count.toString().padStart(2, "0");
+  
   return (
     <div className={classes.addSemesterModal_main}>
       <div className={classes.addSemesterModal_card}>
@@ -90,6 +92,7 @@ const AddSemesterModal = (props) => {
               padding: "10px",
               textTransform: "capitalize",
             }}
+            onClick={props.handleModal}
           >
             Cancel
           </Button>

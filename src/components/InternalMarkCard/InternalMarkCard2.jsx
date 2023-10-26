@@ -2,7 +2,10 @@ import React from "react";
 import classes from "./InternalMarkCard.module.css";
 import ScoreBox from "../ScoreBox/ScoreBox";
 
-const InternalMarkCard2 = () => {
+const InternalMarkCard2 = (props) => {
+const internalMark = props.internalMark;
+
+console.log(internalMark);
   return (
     <div className={classes.internaml_mark_card}>
       <h3 className={classes.heading_text}>Internal Mark</h3>

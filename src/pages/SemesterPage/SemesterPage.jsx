@@ -37,8 +37,8 @@ const SemesterPage = () => {
     if (semester) {
       setSingleSemester({
         ...singleSemester,
-        semesterId: semester?.id,
-        semesterName: semester?.name,
+        semesterId: semester?.semester_id,
+        semesterName: semester?.semester_name,
       });
     }
     setDeleteSemester(!deleteSemester);
@@ -46,13 +46,25 @@ const SemesterPage = () => {
 
   // Semester Getting
   useEffect(() => {
-    axiosApi.get("/store/semester/").then((response) => {
+    axiosApi.get("/store/admin/semester_counts/").then((response) => {
       setSemesters(response.data);
     });
   }, []);
 
   // Semester Adding Function
   const handleAddSemester = (semester) => {
+    const semesterNameExists = semesters.some(
+      (s) => s.semester_name === semester
+    );
+
+    if (semesterNameExists) {
+      setOpen({
+        open: true,
+        type: "warning",
+        text: "Semester with the same name already exists",
+      });
+      return;
+    }
     axiosApi
       .post("/store/semester/", { name: semester })
       .then((response) => {
@@ -62,7 +74,7 @@ const SemesterPage = () => {
           type: "success",
           text: "Semester Added Successfully",
         });
-        axiosApi.get("/store/semester/").then((response) => {
+        axiosApi.get("/store/admin/semester_counts/").then((response) => {
           setSemesters(response.data);
         });
       })
@@ -79,9 +91,9 @@ const SemesterPage = () => {
   // Semester Deleting Function
   const handleDeleteSemester = () => {
     axiosApi
-      .delete(`/store/semester/${singleSemester.semesterId}`)
+      .delete(`/store/semester/${singleSemester.semesterId}/`)
       .then((response) => {
-        axiosApi.get("/store/semester/").then((response) => {
+        axiosApi.get("/store/admin/semester_counts/").then((response) => {
           setSemesters(response.data);
         });
         handleDeleteSemesterModal();
@@ -101,6 +113,9 @@ const SemesterPage = () => {
       });
   };
 
+  const formatCountWithLeadingZeros = (count) => {
+    return count.toString().padStart(2, "0");
+  };
   return (
     <>
       <div className={classes.semesterPage_main}>
@@ -108,11 +123,22 @@ const SemesterPage = () => {
         {semesters.length !== 0 ? (
           <div className={classes.sem_card_container}>
             {semesters?.map((semester) => (
-              <div key={semester?.id} className={classes.sem_card}>
-                <h5 className={classes.card_heading}>{semester?.name}</h5>
-                <span className={classes.card_content}>0 Subjects</span>
-                <span className={classes.card_content}>0 Teachers</span>
-                <span className={classes.card_content}>0 Students</span>
+              <div key={semester?.semester_id} className={classes.sem_card}>
+                <h5 className={classes.card_heading}>
+                  {semester?.semester_name}
+                </h5>
+                <span className={classes.card_content}>
+                  {formatCountWithLeadingZeros(semester?.subjects_count)}{" "}
+                  Subjects
+                </span>
+                <span className={classes.card_content}>
+                  {formatCountWithLeadingZeros(semester?.teachers_count)}{" "}
+                  Teachers
+                </span>
+                <span className={classes.card_content}>
+                  {formatCountWithLeadingZeros(semester?.students_count)}{" "}
+                  Students
+                </span>
                 <img
                   src={deleteIcon}
                   alt="Delete Icon"
@@ -149,6 +175,7 @@ const SemesterPage = () => {
         <AddSemesterModal
           handleAdd={handleAddSemester}
           handleModal={handleShowAddSemester}
+          semesters={semesters}
         />
       )}
       {deleteSemester && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./SelectSubjectModal.module.css";
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   Stack,
 } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import axiosApi from "../../AxiosMethod";
 
 const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
   color: theme.status.danger,
@@ -26,6 +27,7 @@ const theme = createTheme({
 
 const SelectSubjectModal = (props) => {
   const [checked, setChecked] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   const handleToggle = (subject) => () => {
     const isSubjectChecked = checked.includes(subject);
@@ -46,6 +48,15 @@ const SelectSubjectModal = (props) => {
     { subject: "Digital Computer Principles", semester: "semster 01" },
   ];
 
+  useEffect(() => {
+    axiosApi.get("/store/subject/").then((response) => {
+      setSubjects(response.data);
+    });
+  }, []);
+
+  const handleSubmit = () => {
+    props.handleSubmit(checked);
+  };
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.selectSubjectModal_main}>
@@ -55,29 +66,30 @@ const SelectSubjectModal = (props) => {
             Select the subjects of this teacher
           </p>
           <List sx={{ marginTop: 2 }} className={classes.list}>
-            {courses.map((course) => {
-              const labelId = `checkbox-list-label-${course.subject}`;
+            {subjects?.map((subject) => {
+              const labelId = `checkbox-list-label-${subject?.id}`;
               return (
                 <ListItem
-                  key={course.subject}
+                  key={subject?.id}
                   secondaryAction={
                     <CustomCheckbox
                       color="secondary"
                       edge="end"
-                      onChange={handleToggle(course.subject)}
-                      checked={checked.includes(course.subject)}
+                      onChange={handleToggle(subject?.id)}
+                      checked={checked.includes(subject?.id)}
                       inputProps={{ "aria-labelledby": labelId }}
                     />
                   }
                   disablePadding
-                  onClick={handleToggle(course.subject)}
+                  onClick={handleToggle(subject?.id)}
                   className={classes.listItem}
                 >
                   <ListItemButton>
                     <ListItemText
                       id={labelId}
-                      primary={course.subject}
-                      secondary={course.semester}
+                      primary={subject?.name}
+                      secondary={subject?.semester_name}
+                      primaryTypographyProps={{textTransform:"capitalize"}}
                       secondaryTypographyProps={{ style: { color: "#a29ea6" } }}
                     />
                   </ListItemButton>
@@ -111,6 +123,7 @@ const SelectSubjectModal = (props) => {
                 textTransform: "capitalize",
                 ":hover": { background: "rgba(208, 188, 255, 0.08)" },
               }}
+              onClick={handleSubmit}
             >
               Add
             </Button>

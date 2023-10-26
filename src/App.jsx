@@ -6,8 +6,10 @@ import SemesterPage from "./pages/SemesterPage/SemesterPage";
 import SubjectsPage from "./pages/SubjectsPage/SubjectsPage";
 import TeachersPage from "./pages/TeacherPage/TeacherPage";
 import StudentsPage from "./pages/StudentsPage/StudentsPage";
+import SingleStudent from "./pages/SingleStudent/SingleStudent";
 import InternalMarkPage from "./pages/InternalMarkPage/InternalMarkPage";
 import { Route, Routes } from "react-router-dom";
+import StudentList from "./pages/StudentList/StudentList";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -29,6 +31,8 @@ function App() {
           ) : (
             <Routes>
               <Route path="/" element={<TeacherPanel />} />
+              <Route path="/students/:id" element={<StudentList />} />
+              <Route path="/singlestudent/:id/:studentId" element={<SingleStudent />} />
             </Routes>
           )}
         </>

@@ -88,7 +88,7 @@ const SubjectsPage = () => {
 
   // Subject Deleting Function
   const handleDeleteSubject =() => {
-    axiosApi.delete(`/store/subject/${subjectId}`).then((response)=>{
+    axiosApi.delete(`/store/subject/${subjectId}/`).then((response)=>{
       setOpen({
         open: true,
         type: "success",

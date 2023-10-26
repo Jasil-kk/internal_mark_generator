@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./AddStudentModal.module.css";
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axiosApi from "../../AxiosMethod";
 
 let theme = createTheme({});
 theme = createTheme(theme, {
@@ -25,15 +26,13 @@ theme = createTheme(theme, {
 });
 
 const AddStudentModal = (props) => {
+  const [semesters, setSemesters] = useState([]);
   const [data, setData] = useState({
     semester: "",
     fullName: "",
     rollNo: "",
     regNo: "",
   });
-  const handleChange = (e) => {
-    setData({ ...data, semester: e.target.value });
-  };
 
   const handleNumberFieldChange = (e, fieldName) => {
     const formattedNumber = e.target.value.replace(/\D/g, "");
@@ -43,14 +42,21 @@ const AddStudentModal = (props) => {
     }
   };
 
-  const semesters = [
-    "semester 01",
-    "semester 02",
-    "semester 03",
-    "semester 04",
-    "semester 05",
-    "semester 06",
-  ];
+  useEffect(() => {
+    axiosApi.get("/store/semester/").then((response) => {
+      setSemesters(response.data);
+    });
+  }, []);
+
+  const handleSubmit = () => {
+    const input = {
+      semester: data.semester,
+      name: data.fullName,
+      register_number: data.regNo,
+      roll_number: data.rollNo,
+    };
+    props.handleAdd(input);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,7 +78,7 @@ const AddStudentModal = (props) => {
               id="demo-simple-select"
               value={data.semester}
               label="Select semester"
-              onChange={handleChange}
+              onChange={(e) => setData({ ...data, semester: e.target.value })}
               sx={{
                 color: "#CAC4D0",
                 "& .MuiOutlinedInput-notchedOutline": {
@@ -97,16 +103,16 @@ const AddStudentModal = (props) => {
                 },
               }}
             >
-              {semesters.map((semester) => (
+              {semesters?.map((semester) => (
                 <MenuItem
-                  key={semester}
-                  value={semester}
+                  key={semester.id}
+                  value={semester.id}
                   sx={{
                     padding: "10px 25px",
                     ":hover": { background: "#E6E0E914" },
                   }}
                 >
-                  {semester}
+                  {semester.name}
                 </MenuItem>
               ))}
             </Select>
@@ -187,6 +193,7 @@ const AddStudentModal = (props) => {
                 textTransform: "capitalize",
                 ":hover": { background: "rgba(208, 188, 255, 0.08)" },
               }}
+              onClick={handleSubmit}
             >
               Add
             </Button>

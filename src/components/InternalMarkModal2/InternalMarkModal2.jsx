@@ -18,10 +18,14 @@ const InternalMarkModal2 = (props) => {
   const handleFieldChange = (e, fieldName) => {
     const formattedNumber = e.target.value.replace(/\D/g, "");
 
-    if (formattedNumber.length <= 2) {
+    if (formattedNumber.length <= 3) {
       setData({ ...data, [fieldName]: formattedNumber });
     }
   };
+
+  const handleSubmit = () => {
+    props.handleSubmit(data);
+  }
 
   return (
     <div className={classes.internalMarkModal_main}>
@@ -195,7 +199,7 @@ const InternalMarkModal2 = (props) => {
           />
         </Box>
         <div className={classes.add_btn}>
-          <SubmitButton text="Add" />
+          <SubmitButton text="Add" onClick={handleSubmit}/>
         </div>
       </div>
       <div className={classes.modal_closer} onClick={props.handleModal}></div>

@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -15,6 +14,11 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const AddTeacherModal = (props) => {
+  const [data, setData] = useState({
+    fullName: "",
+    userName: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -23,6 +27,9 @@ const AddTeacherModal = (props) => {
     event.preventDefault();
   };
 
+  const handleSubmit = () => {
+    props.handleSubmit(data);
+  };
   return (
     <div className={classes.addTeacherModal_main}>
       <div className={classes.addTeacherModal_card}>
@@ -33,19 +40,21 @@ const AddTeacherModal = (props) => {
         <Box
           component="form"
           sx={{
-            marginTop:"3.5ch",
+            marginTop: "3.5ch",
             width: "32ch",
-            display:"flex",
-            flexDirection:"column",
-            gap:"2.5ch"
+            display: "flex",
+            flexDirection: "column",
+            gap: "2.5ch",
           }}
           noValidate
           autoComplete="off"
         >
           <TextField
-            id="outlined-basic"
+            id="fullName"
             label="Full name"
             variant="outlined"
+            value={data.fullName}
+            onChange={(e) => setData({ ...data, fullName: e.target.value })}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -59,9 +68,11 @@ const AddTeacherModal = (props) => {
             sx={{ width: "100%" }}
           />
           <TextField
-            id="outlined-basic"
+            id="userName"
             label="Username"
             variant="outlined"
+            value={data.userName}
+            onChange={(e) => setData({ ...data, userName: e.target.value })}
             InputProps={{
               classes: {
                 root: classes.inputRoot,
@@ -85,6 +96,8 @@ const AddTeacherModal = (props) => {
             <OutlinedInput
               id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -132,6 +145,7 @@ const AddTeacherModal = (props) => {
               textTransform: "capitalize",
               ":hover": { background: "rgba(208, 188, 255, 0.08)" },
             }}
+            onClick={handleSubmit}
           >
             Next
           </Button>

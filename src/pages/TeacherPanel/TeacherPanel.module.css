@@ -17,7 +17,8 @@
 }
 .teacherPanel_course_container {
   margin-top: 0.62rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;

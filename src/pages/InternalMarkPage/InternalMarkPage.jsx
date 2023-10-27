@@ -20,6 +20,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BorderAllIcon from "@mui/icons-material/BorderAll";
 import styled from "@emotion/styled";
 import axiosApi from "../../AxiosMethod";
+import * as XLSX from "xlsx";
 
 let theme = createTheme({});
 theme = createTheme(theme, {
@@ -39,11 +40,13 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: "#201E24",
     color: "#fff",
     borderColor: "#5B5B5B",
+    textTransform: "capitalize",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
     color: " #fff",
     borderColor: "#5B5B5B",
+    textTransform: "capitalize",
   },
 }));
 
@@ -70,21 +73,6 @@ const InternalMarkPage = () => {
     });
   }, []);
 
-  const rows = [
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Muhsin M",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-  ];
-
   const handleSelectSemester = (semesterId) => {
     setSelectedSemester(semesterId);
     axiosApi
@@ -94,7 +82,75 @@ const InternalMarkPage = () => {
       });
   };
 
-  console.log(internalMark);
+  const formatTotalMark = (mark) => mark.toFixed(0);
+
+  // Export To Sheet Function Starts Here
+
+  function convertTableToXLSX() {
+    try {
+      // Get the table data
+      const table = document.querySelector("table");
+      const tableData = XLSX.utils.table_to_sheet(table);
+
+      // Set the column widths
+      const wscols = [
+        { wch: 5 }, // Column A width
+        { wch: 15 }, // Column B width
+        { wch: 25 }, // Column C width
+        { wch: 25 }, // Column D width
+        { wch: 25 }, // Column E width
+        { wch: 25 }, // Column F width
+        { wch: 25 }, // Column G width
+        { wch: 25 }, // Column H width
+        { wch: 25 }, // Column I width
+        { wch: 25 }, // Column J width
+        { wch: 25 }, // Column K width
+        { wch: 25 }, // Column L width
+        { wch: 25 }, // Column M width
+        { wch: 25 }, // Column N width
+        { wch: 25 }, // Column O width
+        { wch: 25 }, // Column P width
+        { wch: 25 }, // Column Q width
+        { wch: 25 }, // Column R width
+        { wch: 25 }, // Column S width
+        { wch: 25 }, // Column T width
+        { wch: 25 }, // Column U width
+      ];
+      tableData["!cols"] = wscols;
+
+      // Create a workbook and add the table data to it
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, tableData, "Sheet1");
+
+      // Convert the workbook to a binary string
+      const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+
+      // Create a blob from the binary string
+      const blob = new Blob([s2ab(wbout)], {
+        type: "application/octet-stream",
+      });
+
+      // Create a downloadable link for the blob
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "table_data.xlsx";
+      a.click();
+    } catch (error) {
+      console.error("Error while exporting to XLSX:", error);
+    }
+  }
+
+  function s2ab(s) {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) {
+      view[i] = s.charCodeAt(i) & 0xff;
+    }
+    return buf;
+  }
+
+  // Export To Sheet Function Ends Here
 
   return (
     <ThemeProvider theme={theme}>
@@ -167,6 +223,7 @@ const InternalMarkPage = () => {
               fontWeight: "500",
               ":hover": { background: "#381E72" },
             }}
+            onClick={convertTableToXLSX}
           >
             Export to sheet
           </Button>
@@ -193,61 +250,55 @@ const InternalMarkPage = () => {
                     <StyledTableCell align="left" style={{ minWidth: 300 }}>
                       Name
                     </StyledTableCell>
-                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                      Digital Computer principles
-                    </StyledTableCell>
-                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                      Microcontroller
-                    </StyledTableCell>
-                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                      Computer Architecture
-                    </StyledTableCell>
-                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                      Cloud Computing
-                    </StyledTableCell>
-                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                      Computer System Hardware
-                    </StyledTableCell>
-                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                      Engineering Graphics
-                    </StyledTableCell>
-                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                      Engineering Physics
-                    </StyledTableCell>
+                    {internalMark?.[0]?.theory_marks &&
+                      internalMark?.[0]?.theory_marks?.map((subject) => (
+                        <StyledTableCell
+                          key={subject?.id}
+                          align="left"
+                          style={{ minWidth: 300 }}
+                        >
+                          {subject?.subject_name}
+                        </StyledTableCell>
+                      ))}
+                    {internalMark?.[0]?.lab_marks &&
+                      internalMark?.[0]?.lab_marks?.map((subject) => (
+                        <StyledTableCell
+                          key={subject?.id}
+                          align="left"
+                          style={{ minWidth: 300 }}
+                        >
+                          {subject?.subject_name}
+                        </StyledTableCell>
+                      ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {internalMark?.map((data, index) => (
                     <StyledTableRow
-                      key={row.name}
+                      key={index}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      <StyledTableCell align="left">{row.no}</StyledTableCell>
                       <StyledTableCell align="left">
-                        {row.regNo}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">{row.name}</StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.subject1}
+                        {data?.student?.roll_number}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {row.subject2}
+                        {data?.student?.register_number}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {row.subject3}
+                        {data?.student?.name}
                       </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.subject4}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.subject5}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.subject6}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.subject7}
-                      </StyledTableCell>
+                      {data?.theory_marks &&
+                        data?.theory_marks?.map((subject) => (
+                          <StyledTableCell key={subject?.id} align="left">
+                            {formatTotalMark(subject?.total_internal_mark)}
+                          </StyledTableCell>
+                        ))}
+                      {data?.lab_marks &&
+                        data?.lab_marks?.map((subject) => (
+                          <StyledTableCell key={subject?.id} align="left">
+                            {formatTotalMark(subject?.total_lab_mark)}
+                          </StyledTableCell>
+                        ))}
                     </StyledTableRow>
                   ))}
                 </TableBody>

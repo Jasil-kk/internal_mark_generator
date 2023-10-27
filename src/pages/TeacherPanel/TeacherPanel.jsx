@@ -40,7 +40,6 @@ const TeacherPanel = () => {
     });
   }, []);
 
-  console.log(semesters);
   const handleNavigate = (data) => {
     if (data?.id) {
       navigate(`/students/${data?.id}`);

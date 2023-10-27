@@ -31,6 +31,7 @@ const AdminPanel = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("id");
     window.location.reload();
   };
 
@@ -81,28 +82,44 @@ const AdminPanel = () => {
           <ItemCard
             backgroundIcon={noteStack}
             nameText="Semesters"
-            count={formatCountWithLeadingZeros(counts?.semesters)}
+            count={
+              counts?.semesters
+                ? formatCountWithLeadingZeros(counts?.semesters)
+                : 0
+            }
             labelIcon={bookmark}
             onClick={() => navigate("/semesters")}
           />
           <ItemCard
             backgroundIcon={menuBook}
             nameText="Subjects"
-            count={formatCountWithLeadingZeros(counts?.subjects)}
+            count={
+              counts?.subjects
+                ? formatCountWithLeadingZeros(counts?.subjects)
+                : 0
+            }
             labelIcon={bookmark}
             onClick={() => navigate("/subjects")}
           />
           <ItemCard
             backgroundIcon={face}
             nameText="Teachers"
-            count={formatCountWithLeadingZeros(counts?.teachers)}
+            count={
+              counts?.teachers
+                ? formatCountWithLeadingZeros(counts?.teachers)
+                : 0
+            }
             labelIcon={bookmark}
             onClick={() => navigate("/teachers")}
           />
           <ItemCard
             backgroundIcon={school}
             nameText="Students"
-            count={formatCountWithLeadingZeros(counts?.students)}
+            count={
+              counts?.students
+                ? formatCountWithLeadingZeros(counts?.students)
+                : 0
+            }
             labelIcon={bookmark}
             onClick={() => navigate("/students")}
           />

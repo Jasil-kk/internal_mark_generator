@@ -37,9 +37,7 @@ const AddStudentModal = (props) => {
   const handleNumberFieldChange = (e, fieldName) => {
     const formattedNumber = e.target.value.replace(/\D/g, "");
 
-    if (formattedNumber) {
-      setData({ ...data, [fieldName]: formattedNumber });
-    }
+    setData({ ...data, [fieldName]: formattedNumber });
   };
 
   useEffect(() => {

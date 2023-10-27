@@ -65,7 +65,7 @@ const SingleStudent = () => {
     if (subjectType === "Lab") {
       axiosApi
         .get(
-          `/store/lab/internalmark/?student_id=${details?.id}&subject_id=${subjectId}`
+          `/store/lab/internalmark/?student_id=${studentId}&subject_id=${subjectId}`
         )
         .then((response) => {
           console.log(response.data);
@@ -74,10 +74,9 @@ const SingleStudent = () => {
     } else {
       axiosApi
         .get(
-          `/store/theory/internalmark/?student_id=${details?.id}&subject_id=${subjectId}`
+          `/store/theory/internalmark/?student_id=${studentId}&subject_id=${subjectId}`
         )
         .then((response) => {
-          console.log(response.data);
           setInternalMark(response.data);
         });
     }
@@ -116,7 +115,6 @@ const SingleStudent = () => {
     axiosApi
       .post("/store/lab/internalmark/", data)
       .then((response) => {
-        console.log(response.data);
         setOpen({
           open: true,
           type: "success",
@@ -124,11 +122,12 @@ const SingleStudent = () => {
         });
         axiosApi
           .get(
-            `/store/lab/internalmark/?student_id=${details?.id}&subject_id=${subjectId}`
+            `/store/lab/internalmark/?student_id=${studentId}&subject_id=${subjectId}`
           )
           .then((response) => {
             setInternalMark(response.data);
           });
+        setShowModal2(!showModal2);
       })
       .catch((error) => {
         setOpen({
@@ -136,19 +135,121 @@ const SingleStudent = () => {
           type: "error",
           text: "Internal Mark Adding Failed",
         });
+        setShowModal2(!showModal2);
+      });
+  };
+
+  const handleAddTheoryMark = (input) => {
+    if (
+      !input.se1 ||
+      !input.se2 ||
+      !input.se3 ||
+      !input.assg1 ||
+      !input.assg2 ||
+      !input.assg3 ||
+      !input.attendance
+    ) {
+      setOpen({
+        open: true,
+        type: "warning",
+        text: "Please fill in all the fields.",
+      });
+      return;
+    }
+    const data = {
+      student: details?.id,
+      subject: subjectId,
+      semester: semesterId,
+      se1: input.se1,
+      se2: input.se2,
+      se3: input.se3,
+      assignment1: input.assg1,
+      assignment2: input.assg2,
+      assignment3: input.assg3,
+      attendance_percentage: input.attendance,
+    };
+    axiosApi
+      .post("/store/theory/internalmark/", data)
+      .then((response) => {
+        setOpen({
+          open: true,
+          type: "success",
+          text: "Internal Mark Added Successfully",
+        });
+        axiosApi
+          .get(
+            `/store/theory/internalmark/?student_id=${studentId}&subject_id=${subjectId}`
+          )
+          .then((response) => {
+            setInternalMark(response.data);
+          });
+        setShowModal(!showModal);
+      })
+      .catch((error) => {
+        setOpen({
+          open: true,
+          type: "error",
+          text: "Internal Mark Adding Failed",
+        });
+        setShowModal(!showModal);
       });
   };
 
   // Internal Mark Deleting Function
   const handleDeleteIntenalMark = () => {
+    const InternalMarkId = internalMark?.[0]?.id;
     if (subjectType === "Lab") {
-      axiosApi.delete(`/store/lab/internalmark/${id}`).then((response) => {
-        console.log(response);
-      });
+      axiosApi
+        .delete(`/store/lab/internalmark/${InternalMarkId}/`)
+        .then((response) => {
+          handleDeleteModal();
+          setOpen({
+            open: true,
+            type: "success",
+            text: "Internal Mark Deleted Successfully",
+          });
+          axiosApi
+            .get(
+              `/store/lab/internalmark/?student_id=${studentId}&subject_id=${subjectId}`
+            )
+            .then((response) => {
+              setInternalMark(response.data);
+            });
+        })
+        .catch((error) => {
+          setOpen({
+            open: true,
+            type: "error",
+            text: "Internal Mark Deletion Failed",
+          });
+          handleDeleteModal();
+        });
     } else {
-      axiosApi.delete(`/store/theory/internalmark/${id}`).then((response) => {
-        console.log(response);
-      });
+      axiosApi
+        .delete(`/store/theory/internalmark/${InternalMarkId}/`)
+        .then((response) => {
+          setOpen({
+            open: true,
+            type: "success",
+            text: "Internal Mark Deleted Successfully",
+          });
+          axiosApi
+            .get(
+              `/store/theory/internalmark/?student_id=${studentId}&subject_id=${subjectId}`
+            )
+            .then((response) => {
+              setInternalMark(response.data);
+            });
+          handleDeleteModal();
+        })
+        .catch((error) => {
+          setOpen({
+            open: true,
+            type: "error",
+            text: "Internal Mark Deletion Failed",
+          });
+          handleDeleteModal();
+        });
     }
   };
 
@@ -180,7 +281,7 @@ const SingleStudent = () => {
               {subjectType === "Lab" ? (
                 <InternalMarkCard2 internalMark={internalMark} />
               ) : (
-                <InternalMarkCard />
+                <InternalMarkCard internalMark={internalMark} />
               )}
               <img
                 src={deleteIcon}
@@ -211,7 +312,10 @@ const SingleStudent = () => {
         </Snackbar>
       </div>
       {showModal && (
-        <InternalMarkModal handleModal={() => setShowModal(!showModal)} />
+        <InternalMarkModal
+          handleSubmit={handleAddTheoryMark}
+          handleModal={() => setShowModal(!showModal)}
+        />
       )}
       {showModal2 && (
         <InternalMarkModal2
@@ -221,6 +325,7 @@ const SingleStudent = () => {
       )}
       {showDeleteModal && (
         <InternalDeleteModal
+          handleAccept={handleDeleteIntenalMark}
           handleCancel={handleDeleteModal}
           heading="Remove added mark"
           para="Are you sure you want to remove the mark you added earlier? You can

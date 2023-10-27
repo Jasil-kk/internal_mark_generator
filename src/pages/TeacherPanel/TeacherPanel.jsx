@@ -23,6 +23,9 @@ const TeacherPanel = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("id");
+    localStorage.removeItem("subjectType");
+    localStorage.removeItem("subjectId");
     window.location.reload();
   };
 
@@ -76,7 +79,11 @@ const TeacherPanel = () => {
               key={semester?.id}
               className={classes.sem_card}
               onClick={() =>
-                handleNavigate({ id: semester?.semester, role: semester?.role, subjectId:semester?.id })
+                handleNavigate({
+                  id: semester?.semester,
+                  role: semester?.role,
+                  subjectId: semester?.id,
+                })
               }
             >
               <span className={classes.sem_text}>Semester</span>

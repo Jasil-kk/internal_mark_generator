@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./InternalMarkPage.module.css";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import markIcon from "../../assets/internal_dark.png";
@@ -19,6 +19,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BorderAllIcon from "@mui/icons-material/BorderAll";
 import styled from "@emotion/styled";
+import axiosApi from "../../AxiosMethod";
 
 let theme = createTheme({});
 theme = createTheme(theme, {
@@ -35,17 +36,23 @@ theme = createTheme(theme, {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#424242",
-    color: theme.palette.common.white,
+    backgroundColor: "#201E24",
+    color: "#fff",
+    borderColor: "#5B5B5B",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    color: " #fff",
+    borderColor: "#5B5B5B",
   },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: "#141218",
+  },
+  "&:nth-of-type(even)": {
+    backgroundColor: "#141218",
   },
   "&:last-child td, &:last-child th": {
     border: 0,
@@ -53,15 +60,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const InternalMarkPage = () => {
-  const [semester, setSemester] = useState("");
-  const semesters = [
-    "semester 01",
-    "semester 02",
-    "semester 03",
-    "semester 04",
-    "semester 05",
-    "semester 06",
-  ];
+  const [selectedSemester, setSelectedSemester] = useState("");
+  const [semesters, setSemesters] = useState([]);
+  const [internalMark, setInternalMark] = useState([]);
+
+  useEffect(() => {
+    axiosApi.get("/store/semester/").then((response) => {
+      setSemesters(response.data);
+    });
+  }, []);
 
   const rows = [
     {
@@ -76,163 +83,18 @@ const InternalMarkPage = () => {
       subject6: "48",
       subject7: "45",
     },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Walter White",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Ben Johnson",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Ridley Scott",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "1",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "45",
-    },
-    {
-      no: "5",
-      regNo: "369345",
-      name: "Muhammed Jasil ",
-      subject1: "50",
-      subject2: "70",
-      subject3: "43",
-      subject4: "42",
-      subject5: "45",
-      subject6: "48",
-      subject7: "90",
-    },
   ];
+
+  const handleSelectSemester = (semesterId) => {
+    setSelectedSemester(semesterId);
+    axiosApi
+      .get(`/store/admin/list/internalmark/?semester_id=${semesterId}`)
+      .then((response) => {
+        setInternalMark(response.data);
+      });
+  };
+
+  console.log(internalMark);
 
   return (
     <ThemeProvider theme={theme}>
@@ -249,9 +111,12 @@ const InternalMarkPage = () => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={semester}
               label="Select semester"
-              onChange={(e) => setSemester(e.target.value)}
+              value={selectedSemester}
+              onChange={(event) => {
+                const selectedSemesterId = event.target.value;
+                handleSelectSemester(selectedSemesterId);
+              }}
               sx={{
                 textTransform: "capitalize",
                 color: "#CAC4D0",
@@ -278,16 +143,16 @@ const InternalMarkPage = () => {
                 },
               }}
             >
-              {semesters.map((semester) => (
+              {semesters?.map((semester) => (
                 <MenuItem
-                  key={semester}
-                  value={semester}
+                  key={semester?.id}
+                  value={semester?.id}
                   sx={{
                     padding: "10px 25px",
                     ":hover": { background: "#E6E0E914" },
                   }}
                 >
-                  {semester}
+                  {semester?.name}
                 </MenuItem>
               ))}
             </Select>
@@ -306,93 +171,98 @@ const InternalMarkPage = () => {
             Export to sheet
           </Button>
         </div>
-        {/* <div className={classes.noMarks_container}>
-          <img src={markIcon} alt="Icon" className={classes.marks_icon} />
-          <p className={classes.noMarks_text}>
-            Internal marks for this semester's students have not been added
-            yet!"
-          </p>
-        </div> */}
-        <div className={classes.table_container}>
-          <TableContainer
-            component={Paper}
-            sx={{ maxHeight: "100%", maxWidth: "100%" }}
-          >
-            <Table
-              stickyHeader
-              aria-label="sticky table"
-              sx={{ color: "white" }}
+        {internalMark.length !== 0 ? (
+          <div className={classes.table_container}>
+            <TableContainer
+              component={Paper}
+              sx={{ maxHeight: "100%", maxWidth: "100%" }}
             >
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="left" style={{ minWidth: 50 }}>
-                    RollNo.
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 100 }}>
-                    Reg No.
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 300 }}>
-                    Name
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                    Digital Computer principles
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                    Microcontroller
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                    Computer Architecture
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                    Cloud Computing
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                    Computer System Hardware
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                    Engineering Graphics
-                  </StyledTableCell>
-                  <StyledTableCell align="left" style={{ minWidth: 150 }}>
-                    Engineering Physics
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <StyledTableRow
-                    key={row.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <StyledTableCell align="left">{row.no}</StyledTableCell>
-                    <StyledTableCell align="left">{row.regNo}</StyledTableCell>
-                    <StyledTableCell align="left">{row.name}</StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.subject1}
+              <Table
+                stickyHeader
+                aria-label="sticky table"
+                sx={{ color: "white" }}
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="left" style={{ minWidth: 50 }}>
+                      RollNo.
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.subject2}
+                    <StyledTableCell align="left" style={{ minWidth: 100 }}>
+                      Reg No.
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.subject3}
+                    <StyledTableCell align="left" style={{ minWidth: 300 }}>
+                      Name
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.subject4}
+                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
+                      Digital Computer principles
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.subject5}
+                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
+                      Microcontroller
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.subject6}
+                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
+                      Computer Architecture
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.subject7}
+                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
+                      Cloud Computing
                     </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
+                      Computer System Hardware
+                    </StyledTableCell>
+                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
+                      Engineering Graphics
+                    </StyledTableCell>
+                    <StyledTableCell align="left" style={{ minWidth: 150 }}>
+                      Engineering Physics
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <StyledTableRow
+                      key={row.name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <StyledTableCell align="left">{row.no}</StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.regNo}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">{row.name}</StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.subject1}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.subject2}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.subject3}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.subject4}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.subject5}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.subject6}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.subject7}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        ) : (
+          <div className={classes.noMarks_container}>
+            <img src={markIcon} alt="Icon" className={classes.marks_icon} />
+            <p className={classes.noMarks_text}>
+              Internal marks for this semester's students have not been added
+              yet!"
+            </p>
+          </div>
+        )}
       </div>
     </ThemeProvider>
   );

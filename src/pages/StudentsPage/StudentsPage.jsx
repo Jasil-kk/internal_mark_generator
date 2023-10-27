@@ -92,11 +92,6 @@ const StudentsPage = () => {
         setStudents(response.data);
       });
     }
-    if (filterItem === "2") {
-      axiosApi.get(`/store/student/add/?semester_id=${1}`).then((response) => {
-        console.log(response.data);
-      });
-    }
   }, []);
 
   const studentsBySemester = students.reduce((acc, student) => {
@@ -184,8 +179,6 @@ const StudentsPage = () => {
     <>
       <div className={classes.studentsPage_main}>
         <PageHeader navText="Students" addClick={handleAddStudentModal} />
-        {/* {students.length !== 0 ? ( */}
-        {/* <> */}
         <Button
           sx={{
             marginLeft: "10%",
@@ -245,8 +238,13 @@ const StudentsPage = () => {
         </Menu>
         {students.length !== 0 ? (
           <div className={classes.allStudents_container}>
-            {Object.entries(studentsBySemester).map(
-              ([semesterName, studentDetails]) => (
+            {Object.entries(studentsBySemester)
+              .sort(([semesterNameA], [semesterNameB]) => {
+                const semesterA = parseInt(semesterNameA.split(" ")[1]);
+                const semesterB = parseInt(semesterNameB.split(" ")[1]);
+                return semesterA - semesterB;
+              })
+              .map(([semesterName, studentDetails]) => (
                 <div key={semesterName} className={classes.each_sem_section}>
                   <span className={classes.semester_label}>{semesterName}</span>
                   <div className={classes.student_card_container}>
@@ -280,8 +278,7 @@ const StudentsPage = () => {
                     ))}
                   </div>
                 </div>
-              )
-            )}
+              ))}
           </div>
         ) : (
           <div className={classes.noStudents_container}>

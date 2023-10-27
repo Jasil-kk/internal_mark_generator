@@ -23,6 +23,9 @@ const InternalMarkModal = (props) => {
     }
   };
 
+  const handleSubmit = () => {
+    props.handleSubmit(data);
+  }
 
 
   return (
@@ -186,7 +189,7 @@ const InternalMarkModal = (props) => {
           />
         </Box>
         <div className={classes.add_btn}>
-          <SubmitButton text="Add" />
+          <SubmitButton text="Add" onClick={handleSubmit}/>
         </div>
       </div>
       <div className={classes.modal_closer} onClick={props.handleModal}></div>

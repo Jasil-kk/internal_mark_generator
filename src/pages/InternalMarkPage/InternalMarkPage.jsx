@@ -82,7 +82,7 @@ const InternalMarkPage = () => {
       });
   };
 
-  const formatTotalMark = (mark) => mark.toFixed(0);
+  const formatTotalMark = (mark) => mark ? mark.toFixed(0) : "0";
 
   // Export To Sheet Function Starts Here
 
@@ -152,6 +152,8 @@ const InternalMarkPage = () => {
 
   // Export To Sheet Function Ends Here
 
+  console.log(internalMark);
+
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.internalMarkPage_main}>
@@ -213,20 +215,22 @@ const InternalMarkPage = () => {
               ))}
             </Select>
           </FormControl>
-          <Button
-            variant="contained"
-            startIcon={<BorderAllIcon />}
-            size="large"
-            sx={{
-              background: "#381E72",
-              textTransform: "unset",
-              fontWeight: "500",
-              ":hover": { background: "#381E72" },
-            }}
-            onClick={convertTableToXLSX}
-          >
-            Export to sheet
-          </Button>
+          {internalMark.length !== 0 && (
+            <Button
+              variant="contained"
+              startIcon={<BorderAllIcon />}
+              size="large"
+              sx={{
+                background: "#381E72",
+                textTransform: "unset",
+                fontWeight: "500",
+                ":hover": { background: "#381E72" },
+              }}
+              onClick={convertTableToXLSX}
+            >
+              Export to sheet
+            </Button>
+          )}
         </div>
         {internalMark.length !== 0 ? (
           <div className={classes.table_container}>
@@ -287,12 +291,15 @@ const InternalMarkPage = () => {
                       <StyledTableCell align="left">
                         {data?.student?.name}
                       </StyledTableCell>
+
                       {data?.theory_marks &&
                         data?.theory_marks?.map((subject) => (
                           <StyledTableCell key={subject?.id} align="left">
                             {formatTotalMark(subject?.total_internal_mark)}
                           </StyledTableCell>
-                        ))}
+                        ))
+                      }
+
                       {data?.lab_marks &&
                         data?.lab_marks?.map((subject) => (
                           <StyledTableCell key={subject?.id} align="left">

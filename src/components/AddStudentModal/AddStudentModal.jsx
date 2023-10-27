@@ -54,8 +54,13 @@ const AddStudentModal = (props) => {
       roll_number: data.rollNo,
     };
     props.handleAdd(input);
+    setData({
+      ...data,
+      fullName: "",
+      regNo: "",
+      rollNo: "",
+    });
   };
-
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.addStudentModal_main}>

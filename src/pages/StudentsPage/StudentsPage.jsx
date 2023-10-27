@@ -129,7 +129,7 @@ const StudentsPage = () => {
     axiosApi
       .post("/store/student/add/", input)
       .then((response) => {
-        handleAddStudentModal();
+        // handleAddStudentModal();
         setSnackbar({
           open: true,
           type: "success",

@@ -65,6 +65,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const InternalMarkPage = () => {
   const [selectedSemester, setSelectedSemester] = useState("");
   const [semesters, setSemesters] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [internalMark, setInternalMark] = useState([]);
 
   useEffect(() => {
@@ -80,9 +81,14 @@ const InternalMarkPage = () => {
       .then((response) => {
         setInternalMark(response.data);
       });
+    axiosApi
+      .get(`/store/subject/?semester_id=${semesterId}`)
+      .then((response) => {
+        setSubjects(response.data);
+      });
   };
 
-  const formatTotalMark = (mark) => mark ? mark.toFixed(0) : "0";
+  const formatTotalMark = (mark) => (mark ? mark.toFixed(0) : "0");
 
   // Export To Sheet Function Starts Here
 
@@ -153,6 +159,7 @@ const InternalMarkPage = () => {
   // Export To Sheet Function Ends Here
 
   console.log(internalMark);
+  console.log(subjects);
 
   return (
     <ThemeProvider theme={theme}>
@@ -236,7 +243,7 @@ const InternalMarkPage = () => {
           <div className={classes.table_container}>
             <TableContainer
               component={Paper}
-              sx={{ maxHeight: "100%", maxWidth: "100%" }}
+              sx={{ maxHeight: "100%", maxWidth: "100%",background:"transparent" }}
             >
               <Table
                 stickyHeader
@@ -254,26 +261,15 @@ const InternalMarkPage = () => {
                     <StyledTableCell align="left" style={{ minWidth: 300 }}>
                       Name
                     </StyledTableCell>
-                    {internalMark?.[0]?.theory_marks &&
-                      internalMark?.[0]?.theory_marks?.map((subject) => (
-                        <StyledTableCell
-                          key={subject?.id}
-                          align="left"
-                          style={{ minWidth: 300 }}
-                        >
-                          {subject?.subject_name}
-                        </StyledTableCell>
-                      ))}
-                    {internalMark?.[0]?.lab_marks &&
-                      internalMark?.[0]?.lab_marks?.map((subject) => (
-                        <StyledTableCell
-                          key={subject?.id}
-                          align="left"
-                          style={{ minWidth: 300 }}
-                        >
-                          {subject?.subject_name}
-                        </StyledTableCell>
-                      ))}
+                    {subjects?.map((subject) => (
+                      <StyledTableCell
+                        key={subject?.id}
+                        align="left"
+                        style={{ minWidth: 300 }}
+                      >
+                        {subject?.name}
+                      </StyledTableCell>
+                    ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -297,8 +293,7 @@ const InternalMarkPage = () => {
                           <StyledTableCell key={subject?.id} align="left">
                             {formatTotalMark(subject?.total_internal_mark)}
                           </StyledTableCell>
-                        ))
-                      }
+                        ))}
 
                       {data?.lab_marks &&
                         data?.lab_marks?.map((subject) => (

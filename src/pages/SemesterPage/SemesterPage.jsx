@@ -27,7 +27,7 @@ const SemesterPage = () => {
       return;
     }
 
-    setOpen({ open: false });
+    setOpen({ open: false, type: "", text: "" });
   };
 
   const handleShowAddSemester = () => {

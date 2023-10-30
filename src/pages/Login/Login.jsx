@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import classes from "./Login.module.css";
 import logo from "../../assets/logo.svg";
@@ -24,14 +24,13 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useState({ open: false, type: "info", text: "" });
+  const [open, setOpen] = useState({ open: false, type: "", text: "" });
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
-    setOpen({ open: false });
+    setOpen({ open: false, type: "", text: "" });
   };
 
   const handleMouseDownPassword = (event) => {

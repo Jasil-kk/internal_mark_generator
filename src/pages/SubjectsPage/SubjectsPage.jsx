@@ -15,7 +15,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const SubjectsPage = () => {
   const [addSubject, setAddSubject] = useState(false);
   const [subjects, setSubjects] = useState([]);
-  const [subjectId,setSubjectId] = useState("");
+  const [subjectId, setSubjectId] = useState("");
   const [deleteSubject, setDeleteSubject] = useState(false);
   const [open, setOpen] = useState({ open: false, type: "info", text: "" });
 
@@ -24,14 +24,14 @@ const SubjectsPage = () => {
       return;
     }
 
-    setOpen({ open: false });
+    setOpen({ open: false, type: "", text: "" });
   };
   const handleAddSubjectModal = () => {
     setAddSubject(!addSubject);
   };
 
   const handleDeleteSubjectModal = (id) => {
-    if(id){
+    if (id) {
       setSubjectId(id);
     }
     setDeleteSubject(!deleteSubject);
@@ -87,27 +87,29 @@ const SubjectsPage = () => {
   };
 
   // Subject Deleting Function
-  const handleDeleteSubject =() => {
-    axiosApi.delete(`/store/subject/${subjectId}/`).then((response)=>{
-      setOpen({
-        open: true,
-        type: "success",
-        text: "Subject Deleted Successfully",
+  const handleDeleteSubject = () => {
+    axiosApi
+      .delete(`/store/subject/${subjectId}/`)
+      .then((response) => {
+        setOpen({
+          open: true,
+          type: "success",
+          text: "Subject Deleted Successfully",
+        });
+        axiosApi.get("/store/subject/").then((response) => {
+          setSubjects(response.data);
+        });
+        handleDeleteSubjectModal();
+      })
+      .catch((error) => {
+        handleDeleteSubjectModal();
+        setOpen({
+          open: true,
+          type: "error",
+          text: "Subject Deletion Failed",
+        });
       });
-      axiosApi.get("/store/subject/").then((response) => {
-        setSubjects(response.data);
-      });
-      handleDeleteSubjectModal();
-    }).catch((error)=>{
-      handleDeleteSubjectModal();
-      setOpen({
-        open: true,
-        type: "error",
-        text: "Subject Deletion Failed",
-      });
-    })
-  }
-
+  };
 
   return (
     <>
@@ -131,7 +133,7 @@ const SubjectsPage = () => {
                           src={deleteIcon}
                           alt="Delete icon"
                           className={classes.delete_icon}
-                          onClick={()=>handleDeleteSubjectModal(subject?.id)}
+                          onClick={() => handleDeleteSubjectModal(subject?.id)}
                         />
                       </div>
                     ))}
@@ -171,7 +173,7 @@ const SubjectsPage = () => {
       )}
       {deleteSubject && (
         <InternalDeleteModal
-        handleAccept={handleDeleteSubject}
+          handleAccept={handleDeleteSubject}
           handleCancel={handleDeleteSubjectModal}
           heading="Delete subject"
           para="Are you sure you want to delete the subject?"

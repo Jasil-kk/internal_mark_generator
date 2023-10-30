@@ -32,7 +32,7 @@ const TeacherPage = () => {
       return;
     }
 
-    setOpen({ open: false });
+    setOpen({ open: false, type: "", text: "" });
   };
 
   const handleAddTeacherModal = () => {

@@ -34,7 +34,7 @@ const StudentsPage = () => {
       return;
     }
 
-    setSnackbar({ open: false });
+    setSnackbar({ open: false, type: "", text: "" });
   };
 
   const open = Boolean(anchorEl);

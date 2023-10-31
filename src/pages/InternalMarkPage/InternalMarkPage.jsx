@@ -65,8 +65,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const InternalMarkPage = () => {
   const [selectedSemester, setSelectedSemester] = useState("");
   const [semesters, setSemesters] = useState([]);
-  const [subjects, setSubjects] = useState([]);
   const [internalMark, setInternalMark] = useState([]);
+  const uniqueTheoryMarks = [];
+  const uniqueLabMarks = [];
 
   useEffect(() => {
     axiosApi.get("/store/semester/").then((response) => {
@@ -81,14 +82,9 @@ const InternalMarkPage = () => {
       .then((response) => {
         setInternalMark(response.data);
       });
-    axiosApi
-      .get(`/store/subject/?semester_id=${semesterId}`)
-      .then((response) => {
-        setSubjects(response.data);
-      });
   };
 
-  const formatTotalMark = (mark) => (mark ? mark.toFixed(0) : "0");
+  const formatTotalMark = (mark) => mark && mark.toFixed(0);
 
   // Export To Sheet Function Starts Here
 
@@ -157,9 +153,6 @@ const InternalMarkPage = () => {
   }
 
   // Export To Sheet Function Ends Here
-
-  console.log(internalMark);
-  console.log(subjects);
 
   return (
     <ThemeProvider theme={theme}>
@@ -243,7 +236,11 @@ const InternalMarkPage = () => {
           <div className={classes.table_container}>
             <TableContainer
               component={Paper}
-              sx={{ maxHeight: "100%", maxWidth: "100%",background:"transparent" }}
+              sx={{
+                maxHeight: "100%",
+                maxWidth: "100%",
+                background: "transparent",
+              }}
             >
               <Table
                 stickyHeader
@@ -261,14 +258,40 @@ const InternalMarkPage = () => {
                     <StyledTableCell align="left" style={{ minWidth: 300 }}>
                       Name
                     </StyledTableCell>
-                    {subjects?.map((subject) => (
-                      <StyledTableCell
-                        key={subject?.id}
-                        align="left"
-                        style={{ minWidth: 300 }}
-                      >
-                        {subject?.name}
-                      </StyledTableCell>
+                    {internalMark?.map((subject) => (
+                      <>
+                        {subject.theory_marks?.map((mark, index) => {
+                          if (uniqueTheoryMarks.includes(mark?.subject?.name)) {
+                            return null;
+                          }
+                          uniqueTheoryMarks.push(mark?.subject?.name);
+                          return (
+                            <StyledTableCell
+                              key={index}
+                              align="left"
+                              style={{ minWidth: 300 }}
+                            >
+                              {mark?.subject?.name}
+                            </StyledTableCell>
+                          );
+                        })}
+
+                        {subject.lab_marks?.map((mark, index) => {
+                          if (uniqueLabMarks.includes(mark?.subject?.name)) {
+                            return null;
+                          }
+                          uniqueLabMarks.push(mark?.subject?.name);
+                          return (
+                            <StyledTableCell
+                              key={index}
+                              align="left"
+                              style={{ minWidth: 300 }}
+                            >
+                              {mark?.subject?.name}
+                            </StyledTableCell>
+                          );
+                        })}
+                      </>
                     ))}
                   </TableRow>
                 </TableHead>
@@ -288,19 +311,52 @@ const InternalMarkPage = () => {
                         {data?.student?.name}
                       </StyledTableCell>
 
-                      {data?.theory_marks &&
-                        data?.theory_marks?.map((subject) => (
-                          <StyledTableCell key={subject?.id} align="left">
-                            {formatTotalMark(subject?.total_internal_mark)}
-                          </StyledTableCell>
-                        ))}
-
-                      {data?.lab_marks &&
-                        data?.lab_marks?.map((subject) => (
-                          <StyledTableCell key={subject?.id} align="left">
-                            {formatTotalMark(subject?.total_lab_mark)}
-                          </StyledTableCell>
-                        ))}
+                      {uniqueTheoryMarks.map((subjectName, index) => (
+                        <StyledTableCell key={index} align="left">
+                          {(data?.theory_marks &&
+                            data?.theory_marks
+                              .filter(
+                                (subject) =>
+                                  subject?.subject?.name === subjectName
+                              )
+                              .map(
+                                (subject) =>
+                                  formatTotalMark(
+                                    subject?.total_internal_mark
+                                  ) || (
+                                    <span className={classes.notUploadedText}>
+                                      not uploaded
+                                    </span>
+                                  )
+                              )[0]) || (
+                            <span className={classes.notUploadedText}>
+                              not uploaded
+                            </span>
+                          )}
+                        </StyledTableCell>
+                      ))}
+                      {uniqueLabMarks.map((subjectName, index) => (
+                        <StyledTableCell key={index} align="left">
+                          {(data?.lab_marks &&
+                            data?.lab_marks
+                              .filter(
+                                (subject) =>
+                                  subject?.subject?.name === subjectName
+                              )
+                              .map(
+                                (subject) =>
+                                  formatTotalMark(subject.total_lab_mark) || (
+                                    <span className={classes.notUploadedText}>
+                                      not uploaded
+                                    </span>
+                                  )
+                              )[0]) || (
+                            <span className={classes.notUploadedText}>
+                              not uploaded
+                            </span>
+                          )}
+                        </StyledTableCell>
+                      ))}
                     </StyledTableRow>
                   ))}
                 </TableBody>

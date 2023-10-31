@@ -145,7 +145,7 @@ const Login = () => {
       >
         <Alert
           onClose={handleClose}
-          severity={open.type}
+          severity={open.type && open.type}
           sx={{ width: "100%" }}
         >
           {open.text}

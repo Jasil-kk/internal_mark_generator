@@ -28,11 +28,19 @@ const AdminPanel = () => {
     setLogoutModal(!logoutModal);
   };
 
+  // Logout Function
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("id");
-    window.location.reload();
+    axiosApi.post("/projectaccount/logout/").then((response) => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("id");
+      window.location.reload();
+    }).catch(()=>{
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("id");
+      window.location.reload();
+    })
   };
 
   // Count Getting
